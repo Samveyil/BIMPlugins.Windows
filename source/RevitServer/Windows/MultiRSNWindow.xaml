@@ -1,20 +1,20 @@
-﻿<Window x:Class="BIMPlugins.ExtStorage.RevitServer.Windows.MultiRSNWindow"
+﻿<Window x:Class="BIMPlugins.Windows.RevitServer.Windows.MultiRSNWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:classes="clr-namespace:BIMPlugins.ExtStorage.RevitServer.Classes"
-        xmlns:converters="clr-namespace:BIMPlugins.ExtStorage.Converters;assembly=BIMPlugins.ExtStorage"
-        xmlns:local="clr-namespace:BIMPlugins.ExtStorage.RevitServer.ViewModels"
+        xmlns:classes="clr-namespace:BIMPlugins.Windows.RevitServer.Classes"
+        xmlns:converters="clr-namespace:BIMPlugins.Windows.Converters"
+        xmlns:local="clr-namespace:BIMPlugins.Windows.RevitServer.ViewModels"
         d:DataContext="{d:DesignInstance local:MultiRSNViewModel}"
         mc:Ignorable="d"
         Height="700" Width="450" ResizeMode="NoResize" Title="Выберите проект(ы) с Revit Server" WindowStartupLocation="CenterScreen" Topmost="True">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#f88518" SecondaryColor="#FF0052A5" />
+                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#FF3F51B5" SecondaryColor="#FFF4511E" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
@@ -31,14 +31,14 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             
-            <Image Source="/BIMPlugins.ExtStorage;component/Resources/search-32.png" Height="20" Width="20" Margin="5" VerticalAlignment="Center"/>
+            <Image Source="/BIMPlugins.Windows;component/Resources/search-32.png" Height="20" Width="20" Margin="5" VerticalAlignment="Center"/>
             <TextBox Grid.Column="1" Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="5 0" Margin="0 5"
                      Height="22" materialDesign:HintAssist.Hint="Введите текст для фильтрации" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.IsFloating="False">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding FilterKeyDownCommand}"/>
                 </TextBox.InputBindings>
             </TextBox>
-            <materialDesign:PackIcon Grid.Column="2" Kind="InformationOutline" Height="22" Width="22" Margin="5" Padding="0" ToolTipService.InitialShowDelay="10" Foreground="#CC000000">
+            <materialDesign:PackIcon Grid.Column="2" Kind="InformationOutline" Height="22" Width="22" Margin="5" Padding="0" ToolTipService.InitialShowDelay="10">
                 <materialDesign:PackIcon.ToolTip>
                     <TextBlock Text="Синтаксис регулярных выражений&#xa;^ - соответствие должно начинаться в начале строки&#xa;$ - конец строки&#xa;. - знак точки определяет любой одиночный символ&#xa;* - предыдущий символ повторяется 0 и более раз&#xa;+ - предыдущий символ повторяется 1 и более раз&#xa;? - предыдущий символ повторяется 0 или 1 раз&#xa;&#xa;Пример: выражение м.р соответствует слову мир или мор,&#xa;выражение ^Гл.*К1 соответствует проектам начинающихся на Гл и содержащих К1"
                         FontSize="14"/>
@@ -48,9 +48,9 @@
 
         <Button Panel.ZIndex="1" Width="25" Height="25" Padding="0" Margin="5 0 25 -35" Command="{Binding ResetAllExpandedCommand}" CommandParameter="{Binding ServerItems}"
                 HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Свернуть все">
-            <materialDesign:PackIcon Kind="ArrowCollapse" Width="25" Height="25" Foreground="#CC000000"/>
+            <materialDesign:PackIcon Kind="ArrowCollapse" Width="25" Height="25" Foreground="Black"/>
         </Button>
-        <Border Margin="5" Padding="0" BorderThickness="1" BorderBrush="#f88518">
+        <Border Margin="5" Padding="0" BorderThickness="1" BorderBrush="#FF3F51B5" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
             <TreeView Panel.ZIndex="0" ItemsSource="{Binding ServerItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="450" MaxHeight="450"
                       VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Margin="0" Padding="0" 
                       ScrollViewer.VerticalScrollBarVisibility="Visible">
@@ -71,7 +71,7 @@
 
                     <HierarchicalDataTemplate DataType="{x:Type classes:FolderItem}" ItemsSource="{Binding Items}">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Height="20" Width="20" VerticalAlignment="Center" Foreground="#CC000000">
+                            <materialDesign:PackIcon Height="20" Width="20" VerticalAlignment="Center">
                                 <materialDesign:PackIcon.Style>
                                     <Style TargetType="materialDesign:PackIcon">
                                         <Style.Triggers>
@@ -85,7 +85,24 @@
                                     </Style>
                                 </materialDesign:PackIcon.Style>
                             </materialDesign:PackIcon>
+                            
                             <Label Content="{Binding Name, Converter={StaticResource EscapeUnderscoreConverter}}" Height="23"/>
+
+                            <CheckBox IsChecked="{Binding IsSelected}" Margin="5 2 0 0" Padding="0" VerticalAlignment="Center" ToolTip="Выбрать все дочерние элементы"
+                                      Command="{Binding DataContext.FolderCheckedCommand, RelativeSource={RelativeSource AncestorType=TreeView}}" CommandParameter="{Binding}">
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsServer}" Value="true">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsServer}" Value="false">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
                         </StackPanel>
                     </HierarchicalDataTemplate>
 
@@ -100,16 +117,29 @@
             </TreeView>
         </Border>
 
-        <Border Margin="5 0" Padding="0" BorderThickness="1" BorderBrush="#f88518">
-            <ListBox ItemsSource="{Binding Projects}" SelectionMode="Single" Height="125" MaxHeight="125">
+        <Border Margin="5 0" Padding="0" BorderThickness="1" BorderBrush="#FF3F51B5" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
+            <ListBox ItemsSource="{Binding Projects}" SelectionMode="Single" Height="125" MaxHeight="125" materialDesign:ListBoxItemAssist.ShowSelection="False">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
                         <Setter Property="Padding" Value="5 2" />
                     </Style>
                 </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                            <Button Width="18" Height="18" Padding="0" Margin="5 0"
+                                    Command="{Binding DataContext.RemoveProjectCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"
+                                    Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Удалить">
+                                <materialDesign:PackIcon Kind="WindowClose" Width="18" Height="18" />
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
         </Border>
 
-        <Button Style="{StaticResource MaterialDesignPaperButton}" Content="Готово" Margin="5" Height="25" Padding="0"/>
+        <Button Style="{StaticResource MaterialDesignPaperButton}" Content="Готово" Margin="5" Height="25" Padding="0" Command="{Binding RunCommand}"/>
     </StackPanel>
 </Window>

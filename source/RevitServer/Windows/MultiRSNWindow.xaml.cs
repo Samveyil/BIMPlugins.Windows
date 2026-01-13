@@ -1,7 +1,7 @@
-﻿using BIMPlugins.ExtStorage.RevitServer.ViewModels;
+﻿using BIMPlugins.Windows.RevitServer.ViewModels;
 using System.Windows;
 
-namespace BIMPlugins.ExtStorage.RevitServer.Windows
+namespace BIMPlugins.Windows.RevitServer.Windows
 {
     /// <summary>
     /// Логика взаимодействия для MultiRSNWindow.xaml

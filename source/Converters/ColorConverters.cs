@@ -1,0 +1,31 @@
+﻿using System;
+using System.Globalization;
+using System.Windows.Data;
+using System.Windows.Media;
+
+namespace BIMPlugins.Windows.Converters
+{
+    public class RevitColorToSolidColorBrushConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Autodesk.Revit.DB.Color revitColor)
+            {
+                var wpfColor = System.Windows.Media.Color.FromRgb(
+                    revitColor.Red,
+                    revitColor.Green,
+                    revitColor.Blue
+                );
+
+                return new SolidColorBrush(wpfColor);
+            }
+
+            return System.Windows.Media.Brushes.Transparent;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException("Обратное преобразование не требуется");
+        }
+    }
+}

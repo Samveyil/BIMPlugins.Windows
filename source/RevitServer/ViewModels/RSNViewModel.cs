@@ -1,5 +1,4 @@
-﻿using BIMPlugins.ExtStorage.Extensions;
-using BIMPlugins.ExtStorage.RevitServer.Classes;
+﻿using BIMPlugins.Windows.RevitServer.Classes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -10,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Data;
 using System.Xml.Linq;
 
-namespace BIMPlugins.ExtStorage.RevitServer.ViewModels
+namespace BIMPlugins.Windows.RevitServer.ViewModels
 {
     public partial class RSNViewModel : ObservableObject
     {
@@ -19,9 +18,11 @@ namespace BIMPlugins.ExtStorage.RevitServer.ViewModels
 
         private readonly string _xmlFilePath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\BIMPlugins\Структура RevitServer.xml";
 
+        public bool IsCancelled { get; private set; } = true;
+
         partial void OnFilterChanged(string value)
         {
-            if (value.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(value))
             {
                 ResetAllExpanded(ServerItems);
                 
@@ -36,7 +37,7 @@ namespace BIMPlugins.ExtStorage.RevitServer.ViewModels
 
             RefreshAllFilters(ServerItems);
 
-            if (!Filter.IsNullOrEmpty())
+            if (!string.IsNullOrEmpty(Filter))
                 SetExpandedForFilteredItems(ServerItems);
         }
 
@@ -72,7 +73,7 @@ namespace BIMPlugins.ExtStorage.RevitServer.ViewModels
         }
         private bool IsDirectMatch(FileItem fileItem)
         {
-            if (Filter.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Filter))
                 return false;
 
             if (Regex.IsMatch(fileItem.Name, Filter))
@@ -123,10 +124,10 @@ namespace BIMPlugins.ExtStorage.RevitServer.ViewModels
             }
         }
 
-        public RSNViewModel()
+        public RSNViewModel(string revitVersion)
         {
             var xDoc = XDocument.Load(_xmlFilePath);
-            var xRSN = xDoc.Descendants($"RSN{RevitAPI.Application.VersionNumber}").FirstOrDefault();
+            var xRSN = xDoc.Descendants($"RSN{revitVersion}").FirstOrDefault();
 
             var servers = new List<FolderItem>();
             foreach (var xServer in xRSN.Elements())
@@ -141,6 +142,13 @@ namespace BIMPlugins.ExtStorage.RevitServer.ViewModels
             ServerItems.Filter = UniversalFilter;
         }
 
+        [RelayCommand]
+        private void Run()
+        {
+            RaiseCloseRequest();
+            IsCancelled = false;
+        }
+
         private void GetData(FileItem item, XElement xElement)
         {
             var items = new List<FileItem>();
@@ -152,7 +160,7 @@ namespace BIMPlugins.ExtStorage.RevitServer.ViewModels
                     {
                         var childItem = new FolderItem(xChildElement.Attribute("name").Value)
                         {
-                            Parent = item,
+                            Parent = item as FolderItem,
                         };
                         items.Add(childItem);
                         GetData(childItem, xChildElement);
@@ -162,7 +170,7 @@ namespace BIMPlugins.ExtStorage.RevitServer.ViewModels
                 {
                     var fileItem = new FileItem(xChildElement.Attribute("name").Value)
                     {
-                        Parent = item,
+                        Parent = item as FolderItem,
                     };
                     items.Add(fileItem);
                 }
@@ -177,7 +185,7 @@ namespace BIMPlugins.ExtStorage.RevitServer.ViewModels
 
         private bool UniversalFilter(object item)
         {
-            if (Filter.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(Filter))
                 return true;
 
             var fileItem = (FileItem)item;
