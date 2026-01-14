@@ -1,8 +1,6 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using BIMPlugins.Windows.RevitServer.ViewModels;
-using BIMPlugins.Windows.RevitServer.Windows;
 
 namespace BIMPlugins.Windows.RevitServer
 {
@@ -12,11 +10,7 @@ namespace BIMPlugins.Windows.RevitServer
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            var viewModel = new MultiRSNViewModel("2019");
-            var window = new MultiRSNWindow(viewModel);
-            viewModel.CloseRequest += (s, e) => window.Close();
-
-            window.ShowDialog();
+            RSN.GetFilePath("2023");
 
             return Result.Succeeded;
         }

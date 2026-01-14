@@ -42,7 +42,6 @@
 
 	<PropertyGroup>
 		<PackageId>BIMPlugins.Windows</PackageId>
-		<Version>1.0.2</Version>
 		<ProjectGuid>{E0E0B154-1D30-4CD5-AF10-544E90E99B6C}</ProjectGuid>
 	</PropertyGroup>
 
@@ -75,6 +74,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\revit_file_open.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Revit_All_Main_Versions_API_x64" Version="$(RevitVersion).*" IncludeAssets="build; compile" PrivateAssets="All" />
@@ -97,6 +100,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Resource Include="Resources\revit_file_open.ico" />
 	  <Resource Include="Resources\search-32.png" />
 	  <Resource Include="Resources\sectionBox-32.png" />
 	</ItemGroup>

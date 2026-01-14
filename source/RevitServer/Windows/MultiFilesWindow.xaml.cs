@@ -4,11 +4,11 @@ using System.Windows;
 namespace BIMPlugins.Windows.RevitServer.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для MultiRSNWindow.xaml
+    /// Логика взаимодействия для MultiFilesWindow.xaml
     /// </summary>
-    public partial class MultiRSNWindow : Window
+    public partial class MultiFilesWindow : Window
     {
-        public MultiRSNWindow(MultiRSNViewModel viewModel)
+        public MultiFilesWindow(MultiFilesViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;

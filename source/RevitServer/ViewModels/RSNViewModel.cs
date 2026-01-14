@@ -18,7 +18,7 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
         private readonly string _xmlFilePath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\BIMPlugins\Структура RevitServer.xml";
 
-        public bool IsCancelled { get; private set; } = true;
+        public bool IsCancelled { get; set; } = true;
 
         partial void OnFilterChanged(string value)
         {
@@ -124,6 +124,33 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
             }
         }
 
+        public RSNViewModel()
+        {
+            var xDoc = XDocument.Load(_xmlFilePath);
+
+            var revits = new List<FolderItem>();
+            foreach (var xRSN in xDoc.Element("RevitServer").Elements())
+            {
+                var revitItem = new FolderItem(xRSN.Name.LocalName) { IsServer = true};
+
+                var servers = new List<FolderItem>();
+                foreach (var xServer in xRSN.Elements())
+                {
+                    var serverItem = new FolderItem(xServer.Attribute("name").Value) { IsServer = true, Parent = revitItem };
+                    GetData(serverItem, xServer);
+
+                    servers.Add(serverItem);
+                }
+
+                revitItem.Items = CollectionViewSource.GetDefaultView(servers);
+                revitItem.Items.Filter = UniversalFilter;
+
+                revits.Add(revitItem);
+            }
+
+            ServerItems = CollectionViewSource.GetDefaultView(revits);
+            ServerItems.Filter = UniversalFilter;
+        }
         public RSNViewModel(string revitVersion)
         {
             var xDoc = XDocument.Load(_xmlFilePath);
@@ -140,13 +167,6 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
             ServerItems = CollectionViewSource.GetDefaultView(servers);
             ServerItems.Filter = UniversalFilter;
-        }
-
-        [RelayCommand]
-        private void Run()
-        {
-            RaiseCloseRequest();
-            IsCancelled = false;
         }
 
         private void GetData(FileItem item, XElement xElement)
@@ -171,6 +191,8 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
                     var fileItem = new FileItem(xChildElement.Attribute("name").Value)
                     {
                         Parent = item as FolderItem,
+                        FilePath = GetRSNPath(xChildElement),
+                        Version = xChildElement.Ancestors("server").First().Parent.Name.LocalName.Replace("RSN", "")
                     };
                     items.Add(fileItem);
                 }
@@ -231,6 +253,50 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
             }
 
             return false;
+        }
+
+        private string GetRSNPath(XElement fileElement)
+        {
+            var pathParts = new List<string>();
+
+            var fileName = fileElement.Attribute("name")?.Value;
+            if (!string.IsNullOrEmpty(fileName))
+                pathParts.Add(fileName);
+
+            XElement current = fileElement.Parent;
+            string serverName = null;
+
+            while (current != null)
+            {
+                var elementName = current.Name.LocalName;
+                var nameAttr = current.Attribute("name")?.Value;
+
+                switch (elementName)
+                {
+                    case "folder":
+                        if (!string.IsNullOrEmpty(nameAttr))
+                            pathParts.Insert(0, nameAttr);
+                        break;
+
+                    case "project":
+                        if (!string.IsNullOrEmpty(nameAttr))
+                            pathParts.Insert(0, nameAttr);
+                        break;
+
+                    case "server":
+                        serverName = nameAttr;
+                        break;
+                }
+
+                current = current.Parent;
+            }
+
+            if (!string.IsNullOrEmpty(serverName) && pathParts.Count > 0)
+            {
+                return $"RSN://{serverName}/{string.Join("/", pathParts)}";
+            }
+
+            return string.Empty;
         }
 
 
