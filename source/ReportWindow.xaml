@@ -17,5 +17,13 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <ListBox x:Name="Box" Margin="10" materialDesign:ListBoxItemAssist.ShowSelection="False" />
+    <Border Margin="5" Padding="0" BorderThickness="1" BorderBrush="#f88518" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
+        <ListBox x:Name="Box" Padding="0" materialDesign:ListBoxItemAssist.ShowSelection="False">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                    <Setter Property="Padding" Value="5 2" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+    </Border>
 </Window>

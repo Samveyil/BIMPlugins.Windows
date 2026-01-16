@@ -75,6 +75,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\revit_file_open.ico" />
+	  <None Remove="Resources\server.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -103,6 +104,7 @@
 	  <Resource Include="Resources\revit_file_open.ico" />
 	  <Resource Include="Resources\search-32.png" />
 	  <Resource Include="Resources\sectionBox-32.png" />
+	  <Resource Include="Resources\server.png" />
 	</ItemGroup>
 
 </Project>

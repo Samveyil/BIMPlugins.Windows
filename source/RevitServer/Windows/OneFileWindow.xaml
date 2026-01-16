@@ -14,12 +14,13 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#FF3F51B5" SecondaryColor="#FFF4511E" />
+                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#f88518" SecondaryColor="#FF0052A5" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <converters:EscapeUnderscoreConverter x:Key="EscapeUnderscoreConverter" />
-            <materialDesign:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible"/>
+            <materialDesign:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <materialDesign:BooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -50,7 +51,7 @@
                 HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Свернуть все">
             <materialDesign:PackIcon Kind="ArrowCollapse" Width="25" Height="25" Foreground="Black"/>
         </Button>
-        <Border Margin="5" Padding="0" BorderThickness="1" BorderBrush="#FF3F51B5" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
+        <Border Margin="5" Padding="0" BorderThickness="1" BorderBrush="#f88518" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
             <TreeView Panel.ZIndex="0" ItemsSource="{Binding ServerItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="580" MaxHeight="580"
                       VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Margin="0" Padding="0" 
                       ScrollViewer.VerticalScrollBarVisibility="Visible">
@@ -62,7 +63,7 @@
 
                 <TreeView.Resources>
                     <Style TargetType="TreeViewItem" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
-                        <Setter Property="Padding" Value="2 0"/>
+                        <Setter Property="Padding" Value="0"/>
                         <Setter Property="Margin" Value="0"/>
 
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
@@ -70,22 +71,12 @@
 
                     <HierarchicalDataTemplate DataType="{x:Type classes:FolderItem}" ItemsSource="{Binding Items}">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Height="20" Width="20" VerticalAlignment="Center">
-                                <materialDesign:PackIcon.Style>
-                                    <Style TargetType="materialDesign:PackIcon">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsServer}" Value="true">
-                                                <Setter Property="Kind" Value="IpOutline"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsServer}" Value="false">
-                                                <Setter Property="Kind" Value="FolderOutline"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </materialDesign:PackIcon.Style>
-                            </materialDesign:PackIcon>
+                            <Image Source="/BIMPlugins.Windows;component/Resources/server.png" Height="18" Width="18" Margin="0 2"
+                                   Visibility="{Binding IsServer, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <materialDesign:PackIcon Height="20" Width="20" VerticalAlignment="Center" Kind="FolderOutline"
+                                                     Visibility="{Binding IsServer, Converter={StaticResource InvertBooleanToVisibilityConverter}}" />
 
-                            <Label Content="{Binding Name, Converter={StaticResource EscapeUnderscoreConverter}}" Height="23"/>
+                            <Label Content="{Binding Name, Converter={StaticResource EscapeUnderscoreConverter}}" Height="23" VerticalAlignment="Center"/>
                         </StackPanel>
                     </HierarchicalDataTemplate>
 
