@@ -10,13 +10,13 @@ public class Build : BIMPluginsBuild
 
 
     [Solution("BIMPlugins.Windows.sln")]
-    public override Solution Solution { get; }
+    protected override Solution Solution { get; }
 
-    [Parameter("Project to build name")]
-    public override string ProjectName { get; } = "BIMPlugins.Windows";
+    [Parameter("Имя проекта для сборки")]
+    protected override string ProjectName { get; } = "BIMPlugins.Windows";
 
-    [Parameter("Build configurations to run sequentially")]
-    public override Configuration[] Configurations { get; } = new[] { Configuration.Release };
+    [Parameter("Имена конфигураций для сборки (перечислить через запятую)")]
+    protected override string[] Configurations { get; } = ["Release"];
 
     public static int Main() => Execute<Build>(x => x.Compile);
 }
