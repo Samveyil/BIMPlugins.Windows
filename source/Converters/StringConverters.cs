@@ -43,10 +43,7 @@ namespace BIMPlugins.Windows.Converters
             return "0%";
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 
     public class FilePathToFileNameConverter : IValueConverter
@@ -56,9 +53,6 @@ namespace BIMPlugins.Windows.Converters
             return Path.GetFileName(value as string);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }

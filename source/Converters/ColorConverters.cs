@@ -11,7 +11,7 @@ namespace BIMPlugins.Windows.Converters
         {
             if (value is Autodesk.Revit.DB.Color revitColor)
             {
-                var wpfColor = System.Windows.Media.Color.FromRgb(
+                var wpfColor = Color.FromRgb(
                     revitColor.Red,
                     revitColor.Green,
                     revitColor.Blue
@@ -20,12 +20,9 @@ namespace BIMPlugins.Windows.Converters
                 return new SolidColorBrush(wpfColor);
             }
 
-            return System.Windows.Media.Brushes.Transparent;
+            return Brushes.Transparent;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException("Обратное преобразование не требуется");
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }
