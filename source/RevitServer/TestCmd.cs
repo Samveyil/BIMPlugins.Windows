@@ -9,7 +9,6 @@ namespace BIMPlugins.Windows.RevitServer
     [Regeneration(RegenerationOption.Manual)]
     public class TestCommand : IExternalCommand
     {
-
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             RSN.GetFilePath("2023");

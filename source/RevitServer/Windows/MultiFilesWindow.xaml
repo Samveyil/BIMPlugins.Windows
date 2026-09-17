@@ -7,10 +7,11 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:classes="clr-namespace:BIMPlugins.Windows.RevitServer.Classes"
         xmlns:converters="clr-namespace:BIMPlugins.Windows.Converters"
+        xmlns:localization="clr-namespace:BIMPlugins.Windows.Properties"
         xmlns:local="clr-namespace:BIMPlugins.Windows.RevitServer.ViewModels"
         d:DataContext="{d:DesignInstance local:MultiFilesViewModel}"
         mc:Ignorable="d"
-        Height="700" Width="450" ResizeMode="NoResize" Title="Выберите проект(ы) с Revit Server" WindowStartupLocation="CenterScreen" Topmost="True">
+        Height="700" Width="450" ResizeMode="NoResize" Title="{x:Static localization:Resources.MultiWindowTitle}" WindowStartupLocation="CenterScreen" Topmost="True">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -33,22 +34,24 @@
             </Grid.ColumnDefinitions>
 
             <Image Source="/BIMPlugins.Windows;component/Resources/search-32.png" Height="20" Width="20" Margin="5" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="5 0" Margin="0 5"
-                     Height="22" materialDesign:HintAssist.Hint="Введите текст для фильтрации" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.IsFloating="False">
+            <TextBox Grid.Column="1" Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="5 0" Margin="0 5" Height="22" 
+                     materialDesign:HintAssist.Hint="{x:Static localization:Resources.Filter}"
+                     materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.IsFloating="False">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding FilterKeyDownCommand}"/>
                 </TextBox.InputBindings>
             </TextBox>
             <materialDesign:PackIcon Grid.Column="2" Kind="InformationOutline" Height="22" Width="22" Margin="5" Padding="0" ToolTipService.InitialShowDelay="10">
                 <materialDesign:PackIcon.ToolTip>
-                    <TextBlock Text="Синтаксис регулярных выражений&#xa;^ - соответствие должно начинаться в начале строки&#xa;$ - конец строки&#xa;. - знак точки определяет любой одиночный символ&#xa;* - предыдущий символ повторяется 0 и более раз&#xa;+ - предыдущий символ повторяется 1 и более раз&#xa;? - предыдущий символ повторяется 0 или 1 раз&#xa;&#xa;Пример: выражение м.р соответствует слову мир или мор,&#xa;выражение ^Гл.*К1 соответствует проектам начинающихся на Гл и содержащих К1"
-                        FontSize="14"/>
+                    <TextBlock Text="{x:Static localization:Resources.RegexInfo}" TextWrapping="Wrap" FontSize="14"/>
                 </materialDesign:PackIcon.ToolTip>
             </materialDesign:PackIcon>
         </Grid>
 
-        <Button Panel.ZIndex="1" Width="25" Height="25" Padding="0" Margin="5 0 25 -35" Command="{Binding ResetAllExpandedCommand}" CommandParameter="{Binding ServerItems}"
-                HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Свернуть все">
+        <Button Panel.ZIndex="1" Width="25" Height="25" Padding="0" Margin="5 0 25 -35" HorizontalAlignment="Right" 
+                Command="{Binding ResetAllExpandedCommand}" CommandParameter="{Binding ServerItems}"
+                Style="{StaticResource MaterialDesignFlatButton}" ToolTip="{x:Static localization:Resources.Collapse}">
             <materialDesign:PackIcon Kind="ArrowCollapse" Width="25" Height="25" Foreground="Black"/>
         </Button>
         <Border Margin="5" Padding="0" BorderThickness="1" BorderBrush="#f88518" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
@@ -72,8 +75,10 @@
 
                             <Label Content="{Binding Name, Converter={StaticResource EscapeUnderscoreConverter}}" Height="23" VerticalAlignment="Center"/>
 
-                            <CheckBox IsChecked="{Binding IsSelected}" Margin="5 2 0 0" Padding="0" VerticalAlignment="Center" ToolTip="Выбрать все дочерние элементы"
-                                      Command="{Binding DataContext.FolderCheckedCommand, RelativeSource={RelativeSource AncestorType=TreeView}}" CommandParameter="{Binding}">
+                            <CheckBox IsChecked="{Binding IsSelected}" Margin="5 2 0 0" Padding="0" VerticalAlignment="Center"
+                                      ToolTip="{x:Static localization:Resources.SelectChildren}"
+                                      Command="{Binding DataContext.FolderCheckedCommand, RelativeSource={RelativeSource AncestorType=TreeView}}"
+                                      CommandParameter="{Binding}">
                                 <CheckBox.Style>
                                     <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
                                         <Style.Triggers>
@@ -94,10 +99,12 @@
                         <StackPanel Orientation="Horizontal">
                             <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="2 0" Height="23"
                                       Content="{Binding Name, Converter={StaticResource EscapeUnderscoreConverter}}"
-                                      Command="{Binding DataContext.ProjectCheckedCommand, RelativeSource={RelativeSource AncestorType=TreeView}}" CommandParameter="{Binding}">
+                                      Command="{Binding DataContext.ProjectCheckedCommand, RelativeSource={RelativeSource AncestorType=TreeView}}"
+                                      CommandParameter="{Binding}">
                                 <CheckBox.ContextMenu>
                                     <ContextMenu materialDesign:MenuAssist.MenuItemsPresenterMargin="0">
-                                        <MenuItem Header="Копировать путь" Icon="{materialDesign:PackIcon Kind=ContentCopy}" Command="{Binding CopyPathCommand}"/>
+                                        <MenuItem Header="{x:Static localization:Resources.Copy}"
+                                                  Icon="{materialDesign:PackIcon Kind=ContentCopy}" Command="{Binding CopyPathCommand}"/>
                                     </ContextMenu>
                                 </CheckBox.ContextMenu>
                             </CheckBox>
@@ -120,7 +127,8 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Name}" VerticalAlignment="Center" ToolTip="{Binding FilePath}"/>
                             <Button Width="18" Height="18" Padding="0" Margin="5 0"
-                                    Command="{Binding DataContext.RemoveProjectCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"
+                                    Command="{Binding DataContext.RemoveProjectCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                    CommandParameter="{Binding}"
                                     Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Удалить">
                                 <materialDesign:PackIcon Kind="WindowClose" Width="18" Height="18" />
                             </Button>
@@ -130,6 +138,7 @@
             </ListBox>
         </Border>
 
-        <Button Style="{StaticResource MaterialDesignPaperButton}" Content="Готово" Margin="5" Height="25" Padding="0" Command="{Binding RunCommand}"/>
+        <Button Style="{StaticResource MaterialDesignPaperButton}" Content="{x:Static localization:Resources.Done}" Margin="5" Height="25" Padding="0"
+                Command="{Binding RunCommand}"/>
     </StackPanel>
 </Window>

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:localization="clr-namespace:BIMPlugins.Windows.Properties"
         xmlns:local="clr-namespace:BIMPlugins.Windows.ViewModels"
         d:DataContext="{d:DesignInstance local:MessageViewModel}"
         mc:Ignorable="d"
@@ -42,9 +43,11 @@
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"
                         Visibility="{Binding UseOKButton, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
-                <Button Margin="5 10 25 5" Content="Да" Padding="30 0" Height="25" Style="{StaticResource MaterialDesignPaperButton}"
+                <Button Margin="5 10 25 5" Content="{x:Static localization:Resources.Yes}" Padding="30 0" Height="25"
+                        Style="{StaticResource MaterialDesignPaperButton}"
                         Command="{Binding CloseCommand}" CommandParameter="Да"/>
-                <Button Margin="25 10 5 5" Content="Нет" Padding="30 0" Height="25" Style="{StaticResource MaterialDesignPaperButton}"
+                <Button Margin="25 10 5 5" Content="{x:Static localization:Resources.No}" Padding="30 0" Height="25"
+                        Style="{StaticResource MaterialDesignPaperButton}"
                         Command="{Binding CloseCommand}" CommandParameter="Нет"/>
             </StackPanel>
         </Grid>
