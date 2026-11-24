@@ -29,15 +29,22 @@ namespace BIMPlugins.Windows.Converters
             if (value == null)
                 return "0%";
 
-            if (value is IConvertible numericValue)
+            // A string is IConvertible too, so it is parsed first: Convert.ToDouble throws on text that is not a number.
+            if (value is string strValue)
             {
-                double number = System.Convert.ToDouble(numericValue);
-                return $"{number}%";
+                return double.TryParse(strValue, out double parsedNumber) ? $"{parsedNumber}%" : "0%";
             }
 
-            if (value is string strValue && double.TryParse(strValue, out double parsedNumber))
+            if (value is IConvertible numericValue)
             {
-                return $"{parsedNumber}%";
+                try
+                {
+                    return $"{System.Convert.ToDouble(numericValue)}%";
+                }
+                catch (Exception e) when (e is InvalidCastException || e is FormatException || e is OverflowException)
+                {
+                    return "0%";
+                }
             }
 
             return "0%";

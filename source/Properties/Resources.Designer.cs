@@ -159,5 +159,32 @@ namespace BIMPlugins.Windows.Properties {
                 return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cannot read the Revit Server structure file: {0}.
+        /// </summary>
+        public static string StructureFileInvalid {
+            get {
+                return ResourceManager.GetString("StructureFileInvalid", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Revit Server structure file not found: {0}.
+        /// </summary>
+        public static string StructureFileNotFound {
+            get {
+                return ResourceManager.GetString("StructureFileNotFound", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на No Revit {0} servers in the Revit Server structure file: {1}.
+        /// </summary>
+        public static string StructureVersionNotFound {
+            get {
+                return ResourceManager.GetString("StructureVersionNotFound", resourceCulture);
+            }
+        }
     }
 }

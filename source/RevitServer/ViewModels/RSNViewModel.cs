@@ -1,12 +1,15 @@
-﻿using BIMPlugins.Windows.RevitServer.Classes;
+﻿using BIMPlugins.Windows.Properties;
+using BIMPlugins.Windows.RevitServer.Classes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace BIMPlugins.Windows.RevitServer.ViewModels
@@ -20,8 +23,12 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
         public bool IsCancelled { get; set; } = true;
 
+        private Regex _filterRegex;
+
         partial void OnFilterChanged(string value)
         {
+            _filterRegex = CreateFilterRegex(value);
+
             if (string.IsNullOrEmpty(value))
             {
                 ResetAllExpanded(ServerItems);
@@ -76,7 +83,7 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
             if (string.IsNullOrEmpty(Filter))
                 return false;
 
-            if (Regex.IsMatch(fileItem.Name, Filter))
+            if (MatchesFilter(fileItem.Name))
                 return true;
 
             if (fileItem is FolderItem folderItem)
@@ -91,7 +98,7 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
             foreach (FileItem child in folderItem.Items.SourceCollection)
             {
-                if (Regex.IsMatch(child.Name, Filter))
+                if (MatchesFilter(child.Name))
                     return true;
 
                 if (child is FolderItem childFolder && HasDirectMatchingChildren(childFolder))
@@ -126,10 +133,11 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
         public RSNViewModel()
         {
-            var xDoc = XDocument.Load(_xmlFilePath);
+            var xRoot = LoadStructure().Element("RevitServer")
+                ?? throw new InvalidDataException(string.Format(Resources.StructureFileInvalid, _xmlFilePath));
 
             var revits = new List<FolderItem>();
-            foreach (var xRSN in xDoc.Element("RevitServer").Elements())
+            foreach (var xRSN in xRoot.Elements())
             {
                 var revitItem = new FolderItem(xRSN.Name.LocalName) { IsServer = true};
 
@@ -153,8 +161,9 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
         }
         public RSNViewModel(string revitVersion)
         {
-            var xDoc = XDocument.Load(_xmlFilePath);
-            var xRSN = xDoc.Descendants($"RSN{revitVersion}").FirstOrDefault();
+            var xDoc = LoadStructure();
+            var xRSN = xDoc.Descendants($"RSN{revitVersion}").FirstOrDefault()
+                ?? throw new InvalidDataException(string.Format(Resources.StructureVersionNotFound, revitVersion, _xmlFilePath));
 
             var servers = new List<FolderItem>();
             foreach (var xServer in xRSN.Elements())
@@ -167,6 +176,22 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
             ServerItems = CollectionViewSource.GetDefaultView(servers);
             ServerItems.Filter = UniversalFilter;
+        }
+
+        // Every problem with the structure file comes out as InvalidDataException with a message for the user.
+        private XDocument LoadStructure()
+        {
+            if (!File.Exists(_xmlFilePath))
+                throw new InvalidDataException(string.Format(Resources.StructureFileNotFound, _xmlFilePath));
+
+            try
+            {
+                return XDocument.Load(_xmlFilePath);
+            }
+            catch (Exception e) when (e is XmlException || e is IOException || e is UnauthorizedAccessException)
+            {
+                throw new InvalidDataException(string.Format(Resources.StructureFileInvalid, _xmlFilePath), e);
+            }
         }
 
         private void GetData(FileItem item, XElement xElement)
@@ -212,7 +237,7 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
             var fileItem = (FileItem)item;
 
-            if (Regex.IsMatch(fileItem.Name, Filter))
+            if (MatchesFilter(fileItem.Name))
                 return true;
 
             if (AnyParentMatchesFilter(fileItem))
@@ -228,7 +253,7 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
             var parent = fileItem.Parent;
             while (parent != null)
             {
-                if (Regex.IsMatch(parent.Name, Filter))
+                if (MatchesFilter(parent.Name))
                     return true;
                 
                 parent = parent.Parent;
@@ -242,7 +267,7 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
             foreach (FileItem child in folderItem.Items.SourceCollection)
             {
-                if (Regex.IsMatch(child.Name, Filter))
+                if (MatchesFilter(child.Name))
                     return true;
 
                 if (AnyParentMatchesFilter(child))
@@ -254,6 +279,24 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
             return false;
         }
+
+        // A filter that is not a valid regular expression, such as "(" or "[", is searched for as plain text.
+        private static Regex CreateFilterRegex(string filter)
+        {
+            if (string.IsNullOrEmpty(filter))
+                return null;
+
+            try
+            {
+                return new Regex(filter, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            }
+            catch (ArgumentException)
+            {
+                return new Regex(Regex.Escape(filter), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            }
+        }
+
+        private bool MatchesFilter(string name) => _filterRegex != null && name != null && _filterRegex.IsMatch(name);
 
         private string GetRSNPath(XElement fileElement)
         {

@@ -157,4 +157,16 @@
   <data name="Yes" xml:space="preserve">
     <value>Да</value>
   </data>
+  <data name="StructureFileInvalid" xml:space="preserve">
+    <value>Не удалось прочитать файл структуры Revit Server:
+{0}</value>
+  </data>
+  <data name="StructureFileNotFound" xml:space="preserve">
+    <value>Не найден файл структуры Revit Server:
+{0}</value>
+  </data>
+  <data name="StructureVersionNotFound" xml:space="preserve">
+    <value>В файле структуры Revit Server нет серверов для Revit {0}:
+{1}</value>
+  </data>
 </root>

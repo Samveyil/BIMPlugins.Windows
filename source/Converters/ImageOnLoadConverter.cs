@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -13,16 +14,27 @@ namespace BIMPlugins.Windows.Converters
 
             if (string.IsNullOrEmpty(imagePath))
             {
-                return new BitmapImage();
+                return null;
             }
 
-            BitmapImage bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.UriSource = new Uri(imagePath, UriKind.Absolute);
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.EndInit();
+            // An image that cannot be loaded (a relative path, a missing, locked or broken file) shows nothing instead of
+            // failing the window.
+            try
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri(imagePath, UriKind.Absolute);
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
 
-            return bitmapImage;
+                return bitmapImage;
+            }
+            catch (Exception e) when (e is UriFormatException || e is IOException || e is UnauthorizedAccessException ||
+                                      e is NotSupportedException || e is FormatException || e is ArgumentException)
+            {
+                return null;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;

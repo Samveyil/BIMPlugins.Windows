@@ -157,4 +157,16 @@ Examples:
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="StructureFileInvalid" xml:space="preserve">
+    <value>Cannot read the Revit Server structure file:
+{0}</value>
+  </data>
+  <data name="StructureFileNotFound" xml:space="preserve">
+    <value>Revit Server structure file not found:
+{0}</value>
+  </data>
+  <data name="StructureVersionNotFound" xml:space="preserve">
+    <value>No Revit {0} servers in the Revit Server structure file:
+{1}</value>
+  </data>
 </root>
