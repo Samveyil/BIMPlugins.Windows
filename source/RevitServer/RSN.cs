@@ -1,25 +1,32 @@
-﻿using BIMPlugins.Windows.RevitServer.ViewModels;
+﻿using BIMPlugins.Windows.RevitServer.Classes;
+using BIMPlugins.Windows.RevitServer.ViewModels;
 using BIMPlugins.Windows.RevitServer.Windows;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace BIMPlugins.Windows.RevitServer
 {
+    /// <summary>
+    /// Choosing projects on Revit Server, from the structure file <c>%AppData%\BIMPlugins\Структура RevitServer.xml</c>.
+    /// A missing or broken file is told to the user, and the result is then null, as on cancel.
+    /// </summary>
     public static class RSN
     {
-        /// <summary>Projects of every Revit version; null when cancelled.</summary>
-        public static List<string> GetFilePaths() =>
-            Show(() => new MultiFilesViewModel(), vm => new MultiFilesWindow(vm), vm => vm.FilePaths);
+        /// <summary>Lets the user choose projects; null when cancelled.</summary>
+        /// <param name="version">The Revit version, such as "2023", to show its servers alone; null for every version.</param>
+        public static IReadOnlyList<RevitServerFile> SelectFiles(string version = null) =>
+            Show(() => version == null ? new MultiFilesViewModel() : new MultiFilesViewModel(version),
+                vm => new MultiFilesWindow(vm),
+                vm => (IReadOnlyList<RevitServerFile>)vm.Projects.Select(ToResult).ToList());
 
-        /// <summary>Projects of one Revit version, such as "2023"; null when cancelled.</summary>
-        public static List<string> GetFilePaths(string version) =>
-            Show(() => new MultiFilesViewModel(version), vm => new MultiFilesWindow(vm), vm => vm.FilePaths);
+        /// <summary>Lets the user choose one project of a Revit version, such as "2023"; null when cancelled.</summary>
+        public static RevitServerFile SelectFile(string version) =>
+            Show(() => new OneFileViewModel(version), vm => new OneFileWindow(vm), vm => ToResult(vm.SelectedFile));
 
-        /// <summary>One project of one Revit version, such as "2023"; null when cancelled.</summary>
-        public static string GetFilePath(string version) =>
-            Show(() => new OneFileViewModel(version), vm => new OneFileWindow(vm), vm => vm.FilePath);
+        private static RevitServerFile ToResult(FileItem item) => new(item.Name, item.FilePath, item.Version);
 
         private static TResult Show<TViewModel, TResult>(Func<TViewModel> createViewModel, Func<TViewModel, Window> createWindow,
             Func<TViewModel, TResult> getResult) where TViewModel : RSNViewModel where TResult : class
@@ -36,7 +43,6 @@ namespace BIMPlugins.Windows.RevitServer
             return vm.IsCancelled ? null : getResult(vm);
         }
 
-        // A missing or broken structure file is told to the user instead of failing the add-in; the caller gets null, as on cancel.
         private static T CreateViewModel<T>(Func<T> create) where T : RSNViewModel
         {
             try

@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace BIMPlugins.Windows.RevitServer.Classes
 {
-    public partial class FolderItem(string name) : FileItem(name)
+    internal partial class FolderItem(string name) : FileItem(name)
     {
         [ObservableProperty] private bool _isExpanded = false;
 

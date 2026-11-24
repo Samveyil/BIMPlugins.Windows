@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BIMPlugins.Windows.RevitServer.Classes
 {
-    public partial class FileItem(string name) : ObservableObject
+    internal partial class FileItem(string name) : ObservableObject
     {
         [ObservableProperty] private bool _isSelected = false;
 

@@ -14,7 +14,7 @@ using System.Xml.Linq;
 
 namespace BIMPlugins.Windows.RevitServer.ViewModels
 {
-    public partial class RSNViewModel : ObservableObject
+    internal partial class RSNViewModel : ObservableObject
     {
         [ObservableProperty] private string _filter;
         [ObservableProperty] private ICollectionView _serverItems;

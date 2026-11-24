@@ -6,7 +6,7 @@ namespace BIMPlugins.Windows.RevitServer.Windows
     /// <summary>
     /// Логика взаимодействия для MultiFilesWindow.xaml
     /// </summary>
-    public partial class MultiFilesWindow : Window
+    internal partial class MultiFilesWindow : Window
     {
         public MultiFilesWindow(MultiFilesViewModel viewModel)
         {
