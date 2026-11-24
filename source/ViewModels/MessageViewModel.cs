@@ -22,15 +22,9 @@ namespace BIMPlugins.Windows.ViewModels
 
 
         [RelayCommand]
-        private void Close(string result)
+        private void Close(MessageBoxResult result)
         {
-            Result = result switch
-            {
-                "Да" => MessageBoxResult.Yes,
-                "Нет" => MessageBoxResult.No,
-                "ОК" => MessageBoxResult.OK,
-                _ => MessageBoxResult.Cancel
-            };
+            Result = result;
 
             RaiseCloseRequest();
         }

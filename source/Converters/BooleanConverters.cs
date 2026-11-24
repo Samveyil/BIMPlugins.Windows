@@ -16,7 +16,27 @@ namespace BIMPlugins.Windows.Converters
             return false;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
+        // The checked radio button writes its value to the source; an unchecked one leaves it as it is.
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is not true || parameter is not string radioValue)
+                return Binding.DoNothing;
+
+            var type = Nullable.GetUnderlyingType(targetType) ?? targetType;
+            try
+            {
+                if (type == typeof(string) || type == typeof(object))
+                    return radioValue;
+
+                return type.IsEnum
+                    ? Enum.Parse(type, radioValue)
+                    : System.Convert.ChangeType(radioValue, type, culture);
+            }
+            catch (Exception e) when (e is ArgumentException || e is FormatException || e is InvalidCastException || e is OverflowException)
+            {
+                return Binding.DoNothing;
+            }
+        }
     }
 
     public class NullableToBoolConverter : IValueConverter

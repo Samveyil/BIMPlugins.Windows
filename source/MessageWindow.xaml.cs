@@ -11,6 +11,7 @@ namespace BIMPlugins.Windows
         public MessageWindow()
         {
             InitializeComponent();
+            WindowOwner.SetToRevit(this);
         }
 
         public static MessageBoxResult ShowMessage(string message, MessageBoxImage messageIcon = MessageBoxImage.None, bool useOKButton = true)

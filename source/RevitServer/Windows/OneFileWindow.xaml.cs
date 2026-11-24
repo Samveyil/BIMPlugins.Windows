@@ -11,6 +11,7 @@ namespace BIMPlugins.Windows.RevitServer.Windows
         public OneFileWindow(OneFileViewModel viewModel)
         {
             InitializeComponent();
+            WindowOwner.SetToRevit(this);
             DataContext = viewModel;
         }
     }

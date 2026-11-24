@@ -11,6 +11,7 @@ namespace BIMPlugins.Windows
         public ReportWindow(IEnumerable collection)
         {
             InitializeComponent();
+            WindowOwner.SetToRevit(this);
             Box.ItemsSource = collection;
         }
     }

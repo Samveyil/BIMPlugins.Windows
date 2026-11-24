@@ -169,4 +169,7 @@ Examples:
     <value>No Revit {0} servers in the Revit Server structure file:
 {1}</value>
   </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
 </root>

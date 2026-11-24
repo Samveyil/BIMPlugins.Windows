@@ -169,4 +169,7 @@
     <value>В файле структуры Revit Server нет серверов для Revit {0}:
 {1}</value>
   </data>
+  <data name="OK" xml:space="preserve">
+    <value>ОК</value>
+  </data>
 </root>

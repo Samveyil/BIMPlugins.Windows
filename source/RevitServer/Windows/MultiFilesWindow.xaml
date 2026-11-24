@@ -11,7 +11,7 @@
         xmlns:local="clr-namespace:BIMPlugins.Windows.RevitServer.ViewModels"
         d:DataContext="{d:DesignInstance local:MultiFilesViewModel}"
         mc:Ignorable="d"
-        Height="700" Width="450" ResizeMode="NoResize" Title="{x:Static localization:Resources.MultiWindowTitle}" WindowStartupLocation="CenterScreen" Topmost="True">
+        Height="700" Width="450" ResizeMode="NoResize" Title="{x:Static localization:Resources.MultiWindowTitle}" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

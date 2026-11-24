@@ -124,6 +124,15 @@ namespace BIMPlugins.Windows.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Regular Expression Syntax
         ///  ^ - anchors the match to the start of a line
         ///  $ - anchors the match to the end of a line

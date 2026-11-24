@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:BIMPlugins.Windows"
         mc:Ignorable="d"
         Title="Отработка скрипта" MinWidth="400" MaxWidth="800" MinHeight="300" MaxHeight="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        SizeToContent="WidthAndHeight" Topmost="True">
+        SizeToContent="WidthAndHeight">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
