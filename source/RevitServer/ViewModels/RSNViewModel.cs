@@ -19,7 +19,7 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
         [ObservableProperty] private string _filter;
         [ObservableProperty] private ICollectionView _serverItems;
 
-        private readonly string _xmlFilePath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\BIMPlugins\Структура RevitServer.xml";
+        private readonly string _xmlFilePath = RSN.StructureFilePath;
 
         public bool IsCancelled { get; set; } = true;
 
