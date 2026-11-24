@@ -25,7 +25,7 @@ namespace BIMPlugins.Windows.Converters
     /// </example>
     public class EnumToLocalizedStringConverter : IValueConverter
     {
-        private static readonly CultureInfo[] BackCultures = [new CultureInfo("ru-RU"), CultureInfo.InvariantCulture];
+        private static readonly CultureInfo[] BackCultures = [new CultureInfo("ru"), CultureInfo.InvariantCulture];
 
         /// <summary>The enum to convert text back to, when the binding's source type does not tell it.</summary>
         public Type EnumType { get; set; }

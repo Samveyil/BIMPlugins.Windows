@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] / 2026-11-24
+### Fixed
+- The Russian texts are shown for every Russian culture, such as `ru-KZ` and `ru-BY`, not only `ru-RU`:
+  the translation is in the `ru` folder instead of `ru-RU`.
+
 ## [2.0.0] / 2026-11-24
 First release on nuget.org.
 ### Breaking changes
@@ -46,4 +51,5 @@ First release on nuget.org.
 - The dependency on `CommunityToolkit.Mvvm`: the package depends on `BIMPlugins.MaterialDesign` alone.
 - The debug test command of the Revit Server picker.
 
+[2.0.1]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v2.0.1
 [2.0.0]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v2.0.0
