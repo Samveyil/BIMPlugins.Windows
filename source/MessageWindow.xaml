@@ -13,8 +13,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#f88518" SecondaryColor="#FF0052A5" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+                <materialDesign:BIMPluginsTheme BaseTheme="Light" />
             </ResourceDictionary.MergedDictionaries>
 
             <materialDesign:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter" />
@@ -30,7 +29,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Kind="{Binding Image}" Margin="5" Height="35" Width="35" Foreground="#f88518"
+                <materialDesign:PackIcon Kind="{Binding Image}" Margin="5" Height="35" Width="35" Foreground="{StaticResource BIMPlugins.PrimaryBrush}"
                                          Visibility="{Binding Image, Converter={StaticResource NullableToVisibilityConverter}}"/>
                 <TextBlock Text="{Binding MessageText}" Margin="5" TextWrapping="Wrap" VerticalAlignment="Center" MaxWidth="300"/>
             </StackPanel>

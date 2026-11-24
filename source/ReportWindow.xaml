@@ -11,13 +11,12 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#f88518" SecondaryColor="#FF0052A5" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+                <materialDesign:BIMPluginsTheme BaseTheme="Light" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border Margin="5" Padding="0" BorderThickness="1" BorderBrush="#f88518" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
+    <Border Margin="5" Padding="0" BorderThickness="1" BorderBrush="{StaticResource BIMPlugins.PrimaryBrush}" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
         <ListBox x:Name="Box" Padding="0" materialDesign:ListBoxItemAssist.ShowSelection="False">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
