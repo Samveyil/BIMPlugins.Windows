@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [2.0.1] / 2026-11-24
+### Changed
+- `BIMPlugins.MaterialDesign` 5.3.2.2: narrow scroll bars, as in Visual Studio.
+- `MessageWindow`: more room around the message, a larger icon, and the buttons on a gray strip, as in task dialogs.
 ### Fixed
 - The Russian texts are shown for every Russian culture, such as `ru-KZ` and `ru-BY`, not only `ru-RU`:
   the translation is in the `ru` folder instead of `ru-RU`.
