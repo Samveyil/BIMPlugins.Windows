@@ -1,45 +1,67 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BIMPlugins.Windows.Properties;
 using CommunityToolkit.Mvvm.Input;
+using MaterialDesignThemes.Wpf;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace BIMPlugins.Windows.ViewModels
 {
-    public partial class MessageViewModel(string message, MessageBoxImage messageIcon, bool useOKButton) : ObservableObject
+    /// <summary>A button of <see cref="MessageWindow"/>: Enter presses the default one, Esc the cancel one.</summary>
+    internal sealed class MessageButton(string text, MessageBoxResult result, bool isDefault, bool isCancel)
     {
-        [ObservableProperty] private string _messageText = message;
-        [ObservableProperty] private string _image = messageIcon switch
+        public string Text { get; } = text;
+        public MessageBoxResult Result { get; } = result;
+        public bool IsDefault { get; } = isDefault;
+        public bool IsCancel { get; } = isCancel;
+    }
+
+    internal sealed partial class MessageViewModel
+    {
+        public MessageViewModel(string message, string title, MessageBoxButton buttons, MessageBoxImage icon)
         {
-            MessageBoxImage.Information => "InformationOutline",
-            MessageBoxImage.Question => "Help",
-            MessageBoxImage.Warning => "Alert",
-            MessageBoxImage.Error => "AlertCircleOutline",
-            _ => null
-        };
-        [ObservableProperty] private bool _useOKButton = useOKButton;
-
-        public MessageBoxResult Result { get; private set; } = MessageBoxResult.Cancel;
-
-
-        [RelayCommand]
-        private void Close(string result)
-        {
-            Result = result switch
+            Message = message;
+            Title = string.IsNullOrEmpty(title) ? "BIMPlugins" : title;
+            HasIcon = icon != MessageBoxImage.None;
+            Icon = icon switch
             {
-                "Да" => MessageBoxResult.Yes,
-                "Нет" => MessageBoxResult.No,
-                "ОК" => MessageBoxResult.OK,
-                _ => MessageBoxResult.Cancel
+                MessageBoxImage.Question => PackIconKind.HelpCircleOutline,
+                MessageBoxImage.Warning => PackIconKind.AlertOutline,
+                MessageBoxImage.Error => PackIconKind.AlertCircleOutline,
+                _ => PackIconKind.InformationOutline
             };
 
-            RaiseCloseRequest();
+            MessageButton ok = new(Resources.OK, MessageBoxResult.OK, true, false);
+            MessageButton yes = new(Resources.Yes, MessageBoxResult.Yes, true, false);
+            MessageButton cancel = new(Resources.Cancel, MessageBoxResult.Cancel, false, true);
+
+            // Closing the window answers as the cancel button would, so that it never returns a button that is not there.
+            (Buttons, Result) = buttons switch
+            {
+                MessageBoxButton.OKCancel => (new[] { ok, cancel }, MessageBoxResult.Cancel),
+                MessageBoxButton.YesNo => (new[] { yes, new(Resources.No, MessageBoxResult.No, false, true) }, MessageBoxResult.No),
+                MessageBoxButton.YesNoCancel => (new[] { yes, new(Resources.No, MessageBoxResult.No, false, false), cancel }, MessageBoxResult.Cancel),
+                _ => (new[] { new MessageButton(Resources.OK, MessageBoxResult.OK, true, true) }, MessageBoxResult.OK)
+            };
         }
 
+        public string Message { get; }
+        public string Title { get; }
+        public PackIconKind Icon { get; }
+        public bool HasIcon { get; }
+        public IReadOnlyList<MessageButton> Buttons { get; }
+        public MessageBoxResult Result { get; private set; }
 
         public event EventHandler CloseRequest;
-        public void RaiseCloseRequest()
+
+        [RelayCommand]
+        private void Close(MessageBoxResult result)
         {
+            Result = result;
             CloseRequest?.Invoke(this, EventArgs.Empty);
         }
+
+        [RelayCommand]
+        private void Copy() => ClipboardText.Set(Message);
     }
 }

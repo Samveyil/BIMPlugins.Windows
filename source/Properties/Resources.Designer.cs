@@ -124,6 +124,15 @@ namespace BIMPlugins.Windows.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Regular Expression Syntax
         ///  ^ - anchors the match to the start of a line
         ///  $ - anchors the match to the end of a line
@@ -157,6 +166,177 @@ namespace BIMPlugins.Windows.Properties {
         public static string Yes {
             get {
                 return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cannot read the Revit Server structure file: {0}.
+        /// </summary>
+        public static string StructureFileInvalid {
+            get {
+                return ResourceManager.GetString("StructureFileInvalid", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Revit Server structure file not found: {0}.
+        /// </summary>
+        public static string StructureFileNotFound {
+            get {
+                return ResourceManager.GetString("StructureFileNotFound", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на No Revit {0} servers in the Revit Server structure file: {1}.
+        /// </summary>
+        public static string StructureVersionNotFound {
+            get {
+                return ResourceManager.GetString("StructureVersionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Black lines
+        /// </summary>
+        public static string ColorDepthType_BlackLine {
+            get {
+                return ResourceManager.GetString("ColorDepthType_BlackLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Color
+        /// </summary>
+        public static string ColorDepthType_Color {
+            get {
+                return ResourceManager.GetString("ColorDepthType_Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Grayscale
+        /// </summary>
+        public static string ColorDepthType_GrayScale {
+            get {
+                return ResourceManager.GetString("ColorDepthType_GrayScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на High
+        /// </summary>
+        public static string RasterQualityType_High {
+            get {
+                return ResourceManager.GetString("RasterQualityType_High", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Low
+        /// </summary>
+        public static string RasterQualityType_Low {
+            get {
+                return ResourceManager.GetString("RasterQualityType_Low", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Medium
+        /// </summary>
+        public static string RasterQualityType_Medium {
+            get {
+                return ResourceManager.GetString("RasterQualityType_Medium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Presentation
+        /// </summary>
+        public static string RasterQualityType_Presentation {
+            get {
+                return ResourceManager.GetString("RasterQualityType_Presentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remove
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Report
+        /// </summary>
+        public static string ReportWindowTitle {
+            get {
+                return ResourceManager.GetString("ReportWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Required field.
+        /// </summary>
+        public static string Required {
+            get {
+                return ResourceManager.GetString("Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Duplicate as dependent
+        /// </summary>
+        public static string ViewDuplicateOption_AsDependent {
+            get {
+                return ResourceManager.GetString("ViewDuplicateOption_AsDependent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Duplicate
+        /// </summary>
+        public static string ViewDuplicateOption_Duplicate {
+            get {
+                return ResourceManager.GetString("ViewDuplicateOption_Duplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Duplicate with detailing
+        /// </summary>
+        public static string ViewDuplicateOption_WithDetailing {
+            get {
+                return ResourceManager.GetString("ViewDuplicateOption_WithDetailing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Close
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Copy all
+        /// </summary>
+        public static string CopyAll {
+            get {
+                return ResourceManager.GetString("CopyAll", resourceCulture);
             }
         }
     }

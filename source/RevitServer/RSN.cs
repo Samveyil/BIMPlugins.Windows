@@ -1,44 +1,59 @@
-﻿using BIMPlugins.Windows.RevitServer.ViewModels;
+﻿using BIMPlugins.Windows.RevitServer.Classes;
+using BIMPlugins.Windows.RevitServer.ViewModels;
 using BIMPlugins.Windows.RevitServer.Windows;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Windows;
 
 namespace BIMPlugins.Windows.RevitServer
 {
+    /// <summary>
+    /// Choosing projects on Revit Server, from the structure file <c>%AppData%\BIMPlugins\Структура RevitServer.xml</c>.
+    /// A missing or broken file is told to the user, and the result is then null, as on cancel.
+    /// </summary>
     public static class RSN
     {
-        public static List<string> GetFilePaths()
+        /// <summary>Lets the user choose projects; null when cancelled.</summary>
+        /// <param name="version">The Revit version, such as "2023", to show its servers alone; null for every version.</param>
+        public static IReadOnlyList<RevitServerFile> SelectFiles(string version = null) =>
+            Show(() => version == null ? new MultiFilesViewModel() : new MultiFilesViewModel(version),
+                vm => new MultiFilesWindow(vm),
+                vm => (IReadOnlyList<RevitServerFile>)vm.Projects.Select(ToResult).ToList());
+
+        /// <summary>Lets the user choose one project of a Revit version, such as "2023"; null when cancelled.</summary>
+        public static RevitServerFile SelectFile(string version) =>
+            Show(() => new OneFileViewModel(version), vm => new OneFileWindow(vm), vm => ToResult(vm.SelectedFile));
+
+        private static RevitServerFile ToResult(FileItem item) => new(item.Name, item.FilePath, item.Version);
+
+        private static TResult Show<TViewModel, TResult>(Func<TViewModel> createViewModel, Func<TViewModel, Window> createWindow,
+            Func<TViewModel, TResult> getResult) where TViewModel : RSNViewModel where TResult : class
         {
-            var vm = new MultiFilesViewModel();
-            var window = new MultiFilesWindow(vm);
+            var vm = CreateViewModel(createViewModel);
+            if (vm == null) return null;
+
+            var window = createWindow(vm);
 
             vm.CloseRequest += (s, e) => window.Close();
 
             window.ShowDialog();
 
-            return vm.IsCancelled ? null : vm.FilePaths;
+            return vm.IsCancelled ? null : getResult(vm);
         }
-        public static List<string> GetFilePaths(string version)
+
+        private static T CreateViewModel<T>(Func<T> create) where T : RSNViewModel
         {
-            var vm = new MultiFilesViewModel(version);
-            var window = new MultiFilesWindow(vm);
-
-            vm.CloseRequest += (s, e) => window.Close();
-
-            window.ShowDialog();
-
-            return vm.IsCancelled ? null : vm.FilePaths;
-        }
-
-        public static string GetFilePath(string version)
-        {
-            var vm = new OneFileViewModel(version);
-            var window = new OneFileWindow(vm);
-
-            vm.CloseRequest += (s, e) => window.Close();
-
-            window.ShowDialog();
-
-            return vm.IsCancelled ? null : vm.FilePath;
+            try
+            {
+                return create();
+            }
+            catch (InvalidDataException e)
+            {
+                MessageWindow.ShowMessage(e.Message, icon: MessageBoxImage.Warning);
+                return null;
+            }
         }
     }
 }

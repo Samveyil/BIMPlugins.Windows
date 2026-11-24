@@ -4,19 +4,20 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BIMPlugins.Windows.RevitServer.ViewModels
 {
-    public partial class OneFileViewModel(string revitVersion) : RSNViewModel(revitVersion)
+    internal partial class OneFileViewModel(string revitVersion) : RSNViewModel(revitVersion)
     {
-        [ObservableProperty] private string _filePath;
+        [ObservableProperty] private FileItem _selectedFile;
 
+        // A folder is clicked too; only a file is a choice.
         [RelayCommand]
-        private void TreeItemClicked(FileItem fileItem) => FilePath = fileItem.FilePath;
+        private void TreeItemClicked(FileItem fileItem) => SelectedFile = fileItem is FolderItem ? null : fileItem;
 
         [RelayCommand]
         private void Run()
         {
-            RaiseCloseRequest();
+            IsCancelled = string.IsNullOrEmpty(SelectedFile?.FilePath);
 
-            IsCancelled = string.IsNullOrEmpty(FilePath);
+            RaiseCloseRequest();
         }
     }
 }

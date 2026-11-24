@@ -1,17 +1,14 @@
 ﻿using BIMPlugins.Windows.RevitServer.Classes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace BIMPlugins.Windows.RevitServer.ViewModels
 {
-    public partial class MultiFilesViewModel : RSNViewModel
+    internal partial class MultiFilesViewModel : RSNViewModel
     {
         [ObservableProperty] private ObservableCollection<FileItem> _projects = [];
-
-        public List<string> FilePaths { get; private set; }
 
         public MultiFilesViewModel(string revitVersion) : base(revitVersion)
         {
@@ -55,10 +52,9 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
         [RelayCommand]
         private void Run()
         {
-            RaiseCloseRequest();
+            IsCancelled = Projects.Count == 0;
 
-            FilePaths = Projects.Select(p => p.FilePath).ToList();
-            IsCancelled = FilePaths.Count == 0;
+            RaiseCloseRequest();
         }
 
         private void CheckItemsRecursively(FolderItem folder, bool isSelected)

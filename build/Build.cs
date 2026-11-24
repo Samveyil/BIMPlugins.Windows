@@ -4,18 +4,18 @@ using Nuke.Common.ProjectModel;
 
 public class Build : BIMPluginsBuild
 {
-    protected override int MajorVersion => 1;
+    protected override int MajorVersion => 2;
     protected override int MinorVersion => 0;
-    protected override int MaintenanceVersion => 7;
-
+    protected override int MaintenanceVersion => 0;
 
     [Solution("BIMPlugins.Windows.sln")]
     protected override Solution Solution { get; }
 
-    [Parameter("Имя проекта для сборки")]
+    [Parameter("Name of the project to build")]
     protected override string ProjectName { get; } = "BIMPlugins.Windows";
 
-    [Parameter("Имена конфигураций для сборки (перечислить через запятую)")]
+    // One configuration: the project targets net48 and net8.0-windows at once, so one package serves every Revit version.
+    [Parameter("Configurations to build")]
     protected override string[] Configurations { get; } = ["Release"];
 
     public static int Main() => Execute<Build>(x => x.Compile);

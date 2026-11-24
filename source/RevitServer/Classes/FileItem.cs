@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows;
 
 namespace BIMPlugins.Windows.RevitServer.Classes
 {
-    public partial class FileItem(string name) : ObservableObject
+    internal partial class FileItem(string name) : ObservableObject
     {
         [ObservableProperty] private bool _isSelected = false;
 
@@ -14,6 +13,6 @@ namespace BIMPlugins.Windows.RevitServer.Classes
         public string Version { get; set; }
 
         [RelayCommand]
-        private void CopyPath() => Clipboard.SetText($"Revit {Version} | {FilePath}");
+        private void CopyPath() => ClipboardText.Set($"Revit {Version} | {FilePath}");
     }
 }

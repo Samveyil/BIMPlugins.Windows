@@ -157,4 +157,67 @@
   <data name="Yes" xml:space="preserve">
     <value>Да</value>
   </data>
+  <data name="StructureFileInvalid" xml:space="preserve">
+    <value>Не удалось прочитать файл структуры Revit Server:
+{0}</value>
+  </data>
+  <data name="StructureFileNotFound" xml:space="preserve">
+    <value>Не найден файл структуры Revit Server:
+{0}</value>
+  </data>
+  <data name="StructureVersionNotFound" xml:space="preserve">
+    <value>В файле структуры Revit Server нет серверов для Revit {0}:
+{1}</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="ColorDepthType_BlackLine" xml:space="preserve">
+    <value>Черные линии</value>
+  </data>
+  <data name="ColorDepthType_Color" xml:space="preserve">
+    <value>Цвет</value>
+  </data>
+  <data name="ColorDepthType_GrayScale" xml:space="preserve">
+    <value>Оттенки серого</value>
+  </data>
+  <data name="RasterQualityType_High" xml:space="preserve">
+    <value>Высокое</value>
+  </data>
+  <data name="RasterQualityType_Low" xml:space="preserve">
+    <value>Низкое</value>
+  </data>
+  <data name="RasterQualityType_Medium" xml:space="preserve">
+    <value>Среднее</value>
+  </data>
+  <data name="RasterQualityType_Presentation" xml:space="preserve">
+    <value>Презентационное</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="ReportWindowTitle" xml:space="preserve">
+    <value>Отчёт</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Обязательное поле.</value>
+  </data>
+  <data name="ViewDuplicateOption_AsDependent" xml:space="preserve">
+    <value>Создать зависимый вид</value>
+  </data>
+  <data name="ViewDuplicateOption_Duplicate" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="ViewDuplicateOption_WithDetailing" xml:space="preserve">
+    <value>Копировать с детализацией</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="CopyAll" xml:space="preserve">
+    <value>Копировать всё</value>
+  </data>
 </root>

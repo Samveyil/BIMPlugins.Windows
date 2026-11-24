@@ -4,26 +4,44 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:BIMPlugins.Windows"
+        xmlns:localization="clr-namespace:BIMPlugins.Windows.Properties"
         mc:Ignorable="d"
-        Title="Отработка скрипта" MinWidth="400" MaxWidth="800" MinHeight="300" MaxHeight="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        SizeToContent="WidthAndHeight" Topmost="True">
+        MinWidth="400" MaxWidth="800" MinHeight="300" MaxHeight="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight" ShowInTaskbar="False">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#f88518" SecondaryColor="#FF0052A5" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+                <materialDesign:BIMPluginsTheme BaseTheme="Light" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border Margin="5" Padding="0" BorderThickness="1" BorderBrush="#f88518" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
-        <ListBox x:Name="Box" Padding="0" materialDesign:ListBoxItemAssist.ShowSelection="False">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                    <Setter Property="Padding" Value="5 2" />
-                </Style>
-            </ListBox.ItemContainerStyle>
-        </ListBox>
-    </Border>
+    <!-- Ctrl+C is the Copy command's own key. -->
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Copy" Executed="OnCopy" />
+    </Window.CommandBindings>
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Border Padding="0" BorderThickness="1" BorderBrush="{StaticResource BIMPlugins.PrimaryBrush}" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
+            <ListBox x:Name="Box" Padding="0" materialDesign:ListBoxItemAssist.ShowSelection="False">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                        <Setter Property="Padding" Value="5 2" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </Border>
+
+        <DockPanel Grid.Row="1" Margin="0 5 0 0" LastChildFill="False">
+            <Button DockPanel.Dock="Left" Command="ApplicationCommands.Copy" Content="{x:Static localization:Resources.CopyAll}"
+                    Padding="15 0" Height="25" Style="{StaticResource MaterialDesignPaperButton}" />
+            <Button DockPanel.Dock="Right" Click="OnClose" Content="{x:Static localization:Resources.Close}" IsDefault="True" IsCancel="True"
+                    MinWidth="90" Padding="15 0" Height="25" Style="{StaticResource MaterialDesignPaperButton}" />
+        </DockPanel>
+    </Grid>
 </Window>

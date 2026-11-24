@@ -1,0 +1,46 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## [2.0.0] / 2026-11-24
+First release on nuget.org.
+### Breaking changes
+- The package uses `BIMPlugins.MaterialDesign` instead of `MaterialDesignThemes`, and the windows take the
+  `BIMPluginsTheme` colours.
+- `MessageWindow.ShowMessage(message, title, buttons, icon)` takes a `MessageBoxButton` instead of `bool useOKButton`:
+  `ShowMessage(text, MessageBoxImage.Question, false)` becomes
+  `ShowMessage(text, buttons: MessageBoxButton.YesNo, icon: MessageBoxImage.Question)`.
+  The window's constructor and `MessageViewModel` are no longer public.
+- `ReportWindow.ShowReport(items, title)` replaces `new ReportWindow(items).ShowDialog()`; the constructor is no longer public.
+- `RSN.SelectFiles(version)` and `RSN.SelectFile(version)` return `RevitServerFile` (name, path, Revit version) and replace
+  `GetFilePaths` and `GetFilePath`. The Revit Server windows, view models, `FileItem` and `FolderItem` are no longer public.
+- `EqualsToVisibilityConverter` replaces `IntToVisibilityConverter`: it compares any value with the parameter as text.
+- `ViewDuplicateOptionToStringConverter`, `RasterQualityTypeToStringConverter` and `ColorDepthTypeToStringConverter`
+  show the text in the language of the UI, English or Russian. Back they still take the Russian texts.
+- Windows are owned by the active Revit window instead of being `Topmost` above every program.
+### Features
+- `MessageWindow`: OK/Cancel and Yes/No/Cancel buttons, a title, Enter and Esc, Ctrl+C to copy the message,
+  scrolling for a long message.
+- `ReportWindow`: a title, a button and Ctrl+C to copy every line, Esc to close.
+- `EnumToLocalizedStringConverter` for any enum with texts in the package's resources.
+- `StringToBoolConverter` writes the checked radio button's value back to the source.
+- English and Russian texts for the windows, converters and `NotEmptyValidationRule`.
+- XML documentation for the whole public API, README and icon in the package, symbol package (`.snupkg`).
+- Publish to nuget.org from GitHub Actions with Trusted Publishing.
+### Fixed
+- The Revit Server filter no longer fails on text that is not a valid regular expression, such as `(` or `[`,
+  and ignores case.
+- A missing or broken Revit Server structure file, or a missing Revit version in it, is told to the user instead of
+  failing the add-in.
+- `DataGridBehavior` and `ListBoxBehavior` no longer add a handler on every new list, fail with
+  "Collection was modified" or on a null list, and work with single selection.
+- `NumberToPercentConverter` no longer fails on text that is not a number.
+- `ImageOnLoadConverter` no longer fails on a relative path or a missing, locked or broken file.
+- `RevitColorToSolidColorBrushConverter` no longer fails on an invalid Revit colour.
+- Copying a Revit Server path no longer fails when another program holds the clipboard.
+### Removed
+- The debug test command of the Revit Server picker.
+
+[2.0.0]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v2.0.0

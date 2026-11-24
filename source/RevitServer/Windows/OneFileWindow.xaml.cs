@@ -6,11 +6,12 @@ namespace BIMPlugins.Windows.RevitServer.Windows
     /// <summary>
     /// Логика взаимодействия для OneFileWindow.xaml
     /// </summary>
-    public partial class OneFileWindow : Window
+    internal partial class OneFileWindow : Window
     {
         public OneFileWindow(OneFileViewModel viewModel)
         {
             InitializeComponent();
+            WindowOwner.SetToRevit(this);
             DataContext = viewModel;
         }
     }
