@@ -15,22 +15,12 @@ namespace BIMPlugins.Windows.RevitServer
     /// </summary>
     public static class RSN
     {
-        /// <summary>The default structure file: <c>%AppData%\BIMPlugins\RevitServer.xml</c>.</summary>
-        public static string DefaultStructureFilePath { get; } =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BIMPlugins", "RevitServer.xml");
-
-        // Static fields are set in the order written, so after the default path.
-        private static string _structureFilePath = DefaultStructureFilePath;
-
         /// <summary>
         /// The structure file of Revit Server that the windows read, and that the add-in which collects the structure
-        /// writes; <see cref="DefaultStructureFilePath"/> unless set. Setting null brings the default back.
+        /// writes; <c>%AppData%\BIMPlugins\RevitServer.xml</c> unless set.
         /// </summary>
-        public static string StructureFilePath
-        {
-            get => _structureFilePath;
-            set => _structureFilePath = string.IsNullOrEmpty(value) ? DefaultStructureFilePath : value;
-        }
+        public static string StructureFilePath { get; set; } =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BIMPlugins", "RevitServer.xml");
 
         /// <summary>Lets the user choose projects; null when cancelled.</summary>
         /// <param name="version">The Revit version, such as "2023", to show its servers alone; null for every version.</param>

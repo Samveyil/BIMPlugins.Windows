@@ -22,7 +22,7 @@ First release on nuget.org.
 - Windows are owned by the active Revit window instead of being `Topmost` above every program.
 - The Revit Server structure file is `%AppData%\BIMPlugins\RevitServer.xml` instead of `Структура RevitServer.xml`.
 ### Features
-- `RSN.StructureFilePath` sets another structure file; `RSN.DefaultStructureFilePath` is the default one.
+- `RSN.StructureFilePath` sets another structure file.
 - `MessageWindow`: OK/Cancel and Yes/No/Cancel buttons, a title, Enter and Esc, Ctrl+C to copy the message,
   scrolling for a long message.
 - `ReportWindow`: a title, a button and Ctrl+C to copy every line, Esc to close.
