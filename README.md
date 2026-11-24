@@ -67,7 +67,7 @@ RevitServerFile file = RSN.SelectFile("2023");
 |---|---|
 | `EqualsToVisibilityConverter` | Visible if the value equals `ConverterParameter` |
 | `NullableToBoolConverter` | `true` if the value is not null |
-| `StringToBoolConverter` | Radio buttons bound to one property |
+| `StringToBoolConverter` | `true` if the value equals `ConverterParameter`; back, `true` sets the parameter |
 | `EnumToLocalizedStringConverter` | Enum value as localized text |
 | `ViewDuplicateOptionToStringConverter` | `ViewDuplicateOption` as text |
 | `RasterQualityTypeToStringConverter` | `RasterQualityType` as text |

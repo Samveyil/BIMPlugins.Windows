@@ -27,7 +27,7 @@ First release on nuget.org.
   scrolling for a long message.
 - `ReportWindow`: a title, a button and Ctrl+C to copy every line, Esc to close.
 - `EnumToLocalizedStringConverter` for any enum with texts in the package's resources.
-- `StringToBoolConverter` writes the checked radio button's value back to the source.
+- `StringToBoolConverter` converts back: `true` writes `ConverterParameter` to the source.
 - English and Russian texts for the windows, converters and `NotEmptyValidationRule`.
 - XML documentation for the whole public API, README and icon in the package, symbol package (`.snupkg`).
 - Publish to nuget.org from GitHub Actions with Trusted Publishing.

@@ -6,47 +6,52 @@ using Binding = System.Windows.Data.Binding;
 namespace BIMPlugins.Windows.Converters
 {
     /// <summary>
-    /// For a group of radio buttons bound to one property: a button is checked when the property's text equals its
-    /// parameter, and checking it writes the parameter to the property.
+    /// True when the value's text equals <c>ConverterParameter</c>, for any bool property: IsChecked, IsEnabled,
+    /// IsReadOnly and so on. Back, true writes the parameter to the source, converted to its type (a string, an enum or
+    /// a number), and false leaves the source as it is.
     /// </summary>
     /// <example>
+    /// Enable a button in one mode only:
+    /// <code>
+    /// &lt;Button IsEnabled="{Binding Mode, Converter={StaticResource StringToBool}, ConverterParameter=Edit}" /&gt;
+    /// </code>
+    /// Choose one of several values, as radio buttons or toggle buttons do:
     /// <code>
     /// &lt;RadioButton Content="Low" IsChecked="{Binding Quality, Converter={StaticResource StringToBool}, ConverterParameter=Low}" /&gt;
     /// &lt;RadioButton Content="High" IsChecked="{Binding Quality, Converter={StaticResource StringToBool}, ConverterParameter=High}" /&gt;
     /// </code>
-    /// The property can be a string, an enum or a number: the parameter is converted to its type.
     /// </example>
     public class StringToBoolConverter : IValueConverter
     {
         /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (parameter is string radioValue)
+            if (parameter is string expected)
             {
-                return radioValue.Equals(value?.ToString());
+                return expected.Equals(value?.ToString());
             }
             return false;
         }
 
         /// <inheritdoc/>
         /// <remarks>
-        /// The checked button writes its parameter; an unchecked one, and a parameter that does not convert to the
-        /// property's type, leave the property as it is.
+        /// True writes the parameter; false, and a parameter that does not convert to the source's type, leave the
+        /// source as it is.
         /// </remarks>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not true || parameter is not string radioValue)
+            if (value is not true || parameter is not string expected)
                 return Binding.DoNothing;
 
             var type = Nullable.GetUnderlyingType(targetType) ?? targetType;
             try
             {
                 if (type == typeof(string) || type == typeof(object))
-                    return radioValue;
+                    return expected;
 
                 return type.IsEnum
-                    ? Enum.Parse(type, radioValue)
-                    : System.Convert.ChangeType(radioValue, type, culture);
+                    ? Enum.Parse(type, expected)
+                    : System.Convert.ChangeType(expected, type, culture);
             }
             catch (Exception e) when (e is ArgumentException || e is FormatException || e is InvalidCastException || e is OverflowException)
             {
