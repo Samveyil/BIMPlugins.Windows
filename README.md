@@ -73,7 +73,7 @@ RevitServerFile file = RSN.SelectFile("2023");
 | `RasterQualityTypeToStringConverter` | `RasterQualityType` as text |
 | `ColorDepthTypeToStringConverter` | `ColorDepthType` as text |
 | `RevitColorToSolidColorBrushConverter` | Revit `Color` as a brush |
-| `EscapeUnderscoreConverter` | `A_101` shown with the underscore in Label and CheckBox |
+| `EscapeUnderscoreConverter` | Keeps `_` in Label, Button and CheckBox text, which otherwise take it as an access key: `A_101` shows as `A_101`, not `A101` |
 | `FilePathToFileNameConverter` | `C:\Clashes\report.xml` as `report.xml` |
 | `NumberToPercentConverter` | `42` as `42%` |
 | `ImageOnLoadConverter` | Image from a file path without locking the file |
