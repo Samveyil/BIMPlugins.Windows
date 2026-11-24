@@ -1,7 +1,6 @@
 ﻿using BIMPlugins.Windows.Properties;
 using BIMPlugins.Windows.RevitServer.Classes;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using BIMPlugins.Windows.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,15 +8,16 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Xml;
 using System.Xml.Linq;
 
 namespace BIMPlugins.Windows.RevitServer.ViewModels
 {
-    internal partial class RSNViewModel : ObservableObject
+    internal class RSNViewModel : ObservableBase
     {
-        [ObservableProperty] private string _filter;
-        [ObservableProperty] private ICollectionView _serverItems;
+        private string _filter;
+        private ICollectionView _serverItems;
 
         private readonly string _xmlFilePath = RSN.StructureFilePath;
 
@@ -25,19 +25,40 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
         private Regex _filterRegex;
 
-        partial void OnFilterChanged(string value)
+        public string Filter
+        {
+            get => _filter;
+            set
+            {
+                if (SetProperty(ref _filter, value))
+                    OnFilterChanged(value);
+            }
+        }
+
+        public ICollectionView ServerItems
+        {
+            get => _serverItems;
+            set => SetProperty(ref _serverItems, value);
+        }
+
+        private ICommand _filterKeyDownCommand;
+        private ICommand _resetAllExpandedCommand;
+
+        public ICommand FilterKeyDownCommand => _filterKeyDownCommand ??= new RelayCommand(FilterKeyDown);
+        public ICommand ResetAllExpandedCommand => _resetAllExpandedCommand ??= new RelayCommand<ICollectionView>(ResetAllExpanded);
+
+        private void OnFilterChanged(string value)
         {
             _filterRegex = CreateFilterRegex(value);
 
             if (string.IsNullOrEmpty(value))
             {
                 ResetAllExpanded(ServerItems);
-                
+
                 RefreshAllFilters(ServerItems);
             }
         }
 
-        [RelayCommand]
         private void FilterKeyDown()
         {
             ResetAllExpanded(ServerItems);
@@ -48,7 +69,6 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
                 SetExpandedForFilteredItems(ServerItems);
         }
 
-        [RelayCommand]
         private void ResetAllExpanded(ICollectionView view)
         {
             if (view == null) return;

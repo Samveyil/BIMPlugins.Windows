@@ -1,9 +1,10 @@
-﻿using BIMPlugins.Windows.Properties;
-using CommunityToolkit.Mvvm.Input;
+﻿using BIMPlugins.Windows.Mvvm;
+using BIMPlugins.Windows.Properties;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
 
 namespace BIMPlugins.Windows.ViewModels
 {
@@ -16,7 +17,7 @@ namespace BIMPlugins.Windows.ViewModels
         public bool IsCancel { get; } = isCancel;
     }
 
-    internal sealed partial class MessageViewModel
+    internal sealed class MessageViewModel
     {
         public MessageViewModel(string message, string title, MessageBoxButton buttons, MessageBoxImage icon)
         {
@@ -54,14 +55,16 @@ namespace BIMPlugins.Windows.ViewModels
 
         public event EventHandler CloseRequest;
 
-        [RelayCommand]
+        public ICommand CloseCommand => _closeCommand ??= new RelayCommand<MessageBoxResult>(Close);
+        public ICommand CopyCommand => _copyCommand ??= new RelayCommand(() => ClipboardText.Set(Message));
+
+        private ICommand _closeCommand;
+        private ICommand _copyCommand;
+
         private void Close(MessageBoxResult result)
         {
             Result = result;
             CloseRequest?.Invoke(this, EventArgs.Empty);
         }
-
-        [RelayCommand]
-        private void Copy() => ClipboardText.Set(Message);
     }
 }

@@ -43,6 +43,7 @@ First release on nuget.org.
 - `RevitColorToSolidColorBrushConverter` no longer fails on an invalid Revit colour.
 - Copying a Revit Server path no longer fails when another program holds the clipboard.
 ### Removed
+- The dependency on `CommunityToolkit.Mvvm`: the package depends on `BIMPlugins.MaterialDesign` alone.
 - The debug test command of the Revit Server picker.
 
 [2.0.0]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v2.0.0

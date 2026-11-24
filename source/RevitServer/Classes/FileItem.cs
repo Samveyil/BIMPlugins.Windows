@@ -1,18 +1,30 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using BIMPlugins.Windows.Mvvm;
+using System.Windows.Input;
 
 namespace BIMPlugins.Windows.RevitServer.Classes
 {
-    internal partial class FileItem(string name) : ObservableObject
+    internal class FileItem : ObservableBase
     {
-        [ObservableProperty] private bool _isSelected = false;
+        private bool _isSelected;
+        private ICommand _copyPathCommand;
 
-        public string Name { get; } = name;
+        public FileItem(string name)
+        {
+            Name = name;
+        }
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
+        }
+
+        public string Name { get; }
         public FolderItem Parent { get; set; }
         public string FilePath { get; set; }
         public string Version { get; set; }
 
-        [RelayCommand]
-        private void CopyPath() => ClipboardText.Set($"Revit {Version} | {FilePath}");
+        // Created on first use: a tree has thousands of items, and few of them are ever copied.
+        public ICommand CopyPathCommand => _copyPathCommand ??= new RelayCommand(() => ClipboardText.Set($"Revit {Version} | {FilePath}"));
     }
 }

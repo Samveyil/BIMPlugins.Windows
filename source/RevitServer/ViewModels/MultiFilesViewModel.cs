@@ -1,14 +1,17 @@
-﻿using BIMPlugins.Windows.RevitServer.Classes;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using BIMPlugins.Windows.Mvvm;
+using BIMPlugins.Windows.RevitServer.Classes;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace BIMPlugins.Windows.RevitServer.ViewModels
 {
-    internal partial class MultiFilesViewModel : RSNViewModel
+    internal class MultiFilesViewModel : RSNViewModel
     {
-        [ObservableProperty] private ObservableCollection<FileItem> _projects = [];
+        private ICommand _folderCheckedCommand;
+        private ICommand _projectCheckedCommand;
+        private ICommand _removeProjectCommand;
+        private ICommand _runCommand;
 
         public MultiFilesViewModel(string revitVersion) : base(revitVersion)
         {
@@ -18,11 +21,15 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
         {
         }
 
+        public ObservableCollection<FileItem> Projects { get; } = [];
 
-        [RelayCommand]
+        public ICommand FolderCheckedCommand => _folderCheckedCommand ??= new RelayCommand<FolderItem>(FolderChecked);
+        public ICommand ProjectCheckedCommand => _projectCheckedCommand ??= new RelayCommand<FileItem>(ProjectChecked);
+        public ICommand RemoveProjectCommand => _removeProjectCommand ??= new RelayCommand<FileItem>(RemoveProject);
+        public ICommand RunCommand => _runCommand ??= new RelayCommand(Run);
+
         private void FolderChecked(FolderItem folderItem) => CheckItemsRecursively(folderItem, folderItem.IsSelected);
 
-        [RelayCommand]
         private void ProjectChecked(FileItem fileItem)
         {
             if (fileItem.IsSelected && !Projects.Contains(fileItem))
@@ -37,11 +44,10 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
                 fileItem.Parent.IsSelected = false;
         }
 
-        [RelayCommand]
         private void RemoveProject(FileItem fileItem)
         {
             Projects.Remove(fileItem);
-            
+
             fileItem.IsSelected = false;
 
             var items = fileItem.Parent.Items.Cast<FileItem>();
@@ -49,7 +55,6 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
                 fileItem.Parent.IsSelected = false;
         }
 
-        [RelayCommand]
         private void Run()
         {
             IsCancelled = Projects.Count == 0;
