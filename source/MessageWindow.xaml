@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:BIMPlugins.Windows.ViewModels"
         d:DataContext="{d:DesignInstance local:MessageViewModel}"
         mc:Ignorable="d"
-        Title="{Binding Title}" MinHeight="150" MinWidth="300" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="{Binding Title}" MinWidth="360" Background="White" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         SizeToContent="WidthAndHeight" ShowInTaskbar="False">
     <Window.Resources>
         <ResourceDictionary>
@@ -23,28 +23,32 @@
         <KeyBinding Key="C" Modifiers="Control" Command="{Binding CopyCommand}" />
     </Window.InputBindings>
 
-    <Border Padding="5">
-        <Grid VerticalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="24 20 24 24">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <materialDesign:PackIcon Kind="{Binding Icon}" Margin="5" Height="35" Width="35" VerticalAlignment="Top"
+            <materialDesign:PackIcon Kind="{Binding Icon}" Margin="0 0 16 0" Height="40" Width="40" VerticalAlignment="Top"
                                      Foreground="{StaticResource BIMPlugins.PrimaryBrush}"
                                      Visibility="{Binding HasIcon, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
             <!-- A long message scrolls instead of growing past the screen. -->
             <ScrollViewer Grid.Column="1" MaxHeight="400" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                           VerticalAlignment="Center" Focusable="False">
-                <TextBlock Text="{Binding Message}" Margin="5" TextWrapping="Wrap" MaxWidth="400"/>
+                <TextBlock Text="{Binding Message}" TextWrapping="Wrap" MaxWidth="400" LineHeight="20"/>
             </ScrollViewer>
+        </Grid>
 
-            <ItemsControl Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Buttons}" HorizontalAlignment="Right" Focusable="False">
+        <!-- The buttons sit on a grey strip, as in the task dialogs of Windows and Revit. -->
+        <Border Grid.Row="1" Background="#F0F0F0" BorderBrush="#DFDFDF" BorderThickness="0 1 0 0" Padding="24 12">
+            <ItemsControl ItemsSource="{Binding Buttons}" HorizontalAlignment="Right" Focusable="False">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
@@ -52,7 +56,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:MessageButton}">
-                        <Button Margin="5 10 5 5" MinWidth="90" Padding="15 0" Height="25" Content="{Binding Text}"
+                        <Button Margin="8 0 0 0" MinWidth="90" Padding="15 0" Height="25" Content="{Binding Text}"
                                 IsDefault="{Binding IsDefault}" IsCancel="{Binding IsCancel}"
                                 Style="{StaticResource MaterialDesignPaperButton}"
                                 Command="{Binding DataContext.CloseCommand, RelativeSource={RelativeSource AncestorType=Window}}"
@@ -60,6 +64,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </Grid>
-    </Border>
+        </Border>
+    </Grid>
 </Window>
