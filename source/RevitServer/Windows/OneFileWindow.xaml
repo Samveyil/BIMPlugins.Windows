@@ -6,6 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:classes="clr-namespace:BIMPlugins.Windows.RevitServer.Classes"
+        xmlns:controls="clr-namespace:BIMPlugins.Windows.Controls"
         xmlns:converters="clr-namespace:BIMPlugins.Windows.Converters"
         xmlns:localization="clr-namespace:BIMPlugins.Windows.Properties"
         xmlns:local="clr-namespace:BIMPlugins.Windows.RevitServer.ViewModels"
@@ -47,12 +48,12 @@
             </materialDesign:PackIcon>
         </Grid>
 
-        <Button Panel.ZIndex="1" Width="25" Height="25" Padding="0" Margin="5 0 25 -35" Command="{Binding ResetAllExpandedCommand}"
+        <Button Panel.ZIndex="1" Width="25" Height="25" Padding="0" Margin="5 0 22 -35" Command="{Binding ResetAllExpandedCommand}"
                 CommandParameter="{Binding ServerItems}" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatButton}"
                 ToolTip="{x:Static localization:Resources.Collapse}">
             <materialDesign:PackIcon Kind="ArrowCollapse" Width="25" Height="25" Foreground="Black"/>
         </Button>
-        <Border Margin="5" Padding="0" BorderThickness="1" BorderBrush="{StaticResource BIMPlugins.PrimaryBrush}" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
+        <controls:ListFrame Margin="5">
             <TreeView Panel.ZIndex="0" ItemsSource="{Binding ServerItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="580" MaxHeight="580"
                       VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Margin="0" Padding="0" 
                       ScrollViewer.VerticalScrollBarVisibility="Visible">
@@ -97,7 +98,7 @@
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>
-        </Border>
+        </controls:ListFrame>
 
         <Button Style="{StaticResource MaterialDesignPaperButton}" Content="{x:Static localization:Resources.Done}" Margin="5" Height="25" Padding="0"
                 Command="{Binding RunCommand}"/>

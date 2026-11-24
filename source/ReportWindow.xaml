@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:BIMPlugins.Windows.Controls"
         xmlns:localization="clr-namespace:BIMPlugins.Windows.Properties"
         mc:Ignorable="d"
         MinWidth="400" MaxWidth="800" MinHeight="300" MaxHeight="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        SizeToContent="WidthAndHeight" ShowInTaskbar="False">
+        SizeToContent="WidthAndHeight" ShowInTaskbar="False" Background="White">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -21,27 +22,38 @@
         <CommandBinding Command="ApplicationCommands.Copy" Executed="OnCopy" />
     </Window.CommandBindings>
 
-    <Grid Margin="5">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Border Padding="0" BorderThickness="1" BorderBrush="{StaticResource BIMPlugins.PrimaryBrush}" Style="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
-            <ListBox x:Name="Box" Padding="0" materialDesign:ListBoxItemAssist.ShowSelection="False">
+        <!-- The list stands as far from the window's edges as the buttons below, on every side. -->
+        <controls:ListFrame Margin="8">
+            <!-- A line wider than the window wraps instead of being cut off. -->
+            <ListBox x:Name="Box" Padding="0" materialDesign:ListBoxItemAssist.ShowSelection="False"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
                         <Setter Property="Padding" Value="5 2" />
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-        </Border>
+        </controls:ListFrame>
 
-        <DockPanel Grid.Row="1" Margin="0 5 0 0" LastChildFill="False">
-            <Button DockPanel.Dock="Left" Command="ApplicationCommands.Copy" Content="{x:Static localization:Resources.CopyAll}"
-                    Padding="15 0" Height="25" Style="{StaticResource MaterialDesignPaperButton}" />
-            <Button DockPanel.Dock="Right" Click="OnClose" Content="{x:Static localization:Resources.Close}" IsDefault="True" IsCancel="True"
-                    MinWidth="90" Padding="15 0" Height="25" Style="{StaticResource MaterialDesignPaperButton}" />
-        </DockPanel>
+        <!-- The buttons sit on a grey strip, as in MessageWindow. -->
+        <Border Grid.Row="1" Background="#F0F0F0" BorderBrush="#DFDFDF" BorderThickness="0 1 0 0" Padding="8 10">
+            <DockPanel LastChildFill="False">
+                <Button DockPanel.Dock="Left" Command="ApplicationCommands.Copy" Content="{x:Static localization:Resources.CopyAll}"
+                        Padding="15 0" Height="25" Style="{StaticResource MaterialDesignPaperButton}" />
+                <Button DockPanel.Dock="Right" Click="OnClose" Content="{x:Static localization:Resources.Close}" IsDefault="True" IsCancel="True"
+                        MinWidth="90" Padding="15 0" Height="25" Style="{StaticResource MaterialDesignPaperButton}" />
+            </DockPanel>
+        </Border>
     </Grid>
 </Window>

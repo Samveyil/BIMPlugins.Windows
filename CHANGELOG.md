@@ -8,7 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - `BIMPlugins.MaterialDesign` 5.3.2.2: narrow scroll bars, as in Visual Studio.
 - `MessageWindow`: more room around the message, a larger icon, and the buttons on a gray strip, as in task dialogs.
+- `ReportWindow`: the buttons on a gray strip, smaller margins, and long lines wrap instead of being cut off.
 ### Fixed
+- Scroll bars no longer cover the rounded corners of the frames around lists, and the frames in the Revit Server
+  windows stand as far from the right edge as from the left.
 - The Russian texts are shown for every Russian culture, such as `ru-KZ` and `ru-BY`, not only `ru-RU`:
   the translation is in the `ru` folder instead of `ru-RU`.
 
