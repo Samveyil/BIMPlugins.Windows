@@ -55,10 +55,10 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
         [RelayCommand]
         private void Run()
         {
-            RaiseCloseRequest();
-
             FilePaths = Projects.Select(p => p.FilePath).ToList();
             IsCancelled = FilePaths.Count == 0;
+
+            RaiseCloseRequest();
         }
 
         private void CheckItemsRecursively(FolderItem folder, bool isSelected)

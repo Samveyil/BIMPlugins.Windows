@@ -172,4 +172,43 @@ Examples:
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="ColorDepthType_BlackLine" xml:space="preserve">
+    <value>Black lines</value>
+  </data>
+  <data name="ColorDepthType_Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="ColorDepthType_GrayScale" xml:space="preserve">
+    <value>Grayscale</value>
+  </data>
+  <data name="RasterQualityType_High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="RasterQualityType_Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="RasterQualityType_Medium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="RasterQualityType_Presentation" xml:space="preserve">
+    <value>Presentation</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="ReportWindowTitle" xml:space="preserve">
+    <value>Script results</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Required field.</value>
+  </data>
+  <data name="ViewDuplicateOption_AsDependent" xml:space="preserve">
+    <value>Duplicate as dependent</value>
+  </data>
+  <data name="ViewDuplicateOption_Duplicate" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="ViewDuplicateOption_WithDetailing" xml:space="preserve">
+    <value>Duplicate with detailing</value>
+  </data>
 </root>

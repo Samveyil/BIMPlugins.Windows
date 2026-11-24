@@ -9,7 +9,8 @@ namespace BIMPlugins.Windows.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Autodesk.Revit.DB.Color revitColor)
+            // An invalid Revit colour (InvalidColorValue) throws on Red, Green and Blue.
+            if (value is Autodesk.Revit.DB.Color { IsValid: true } revitColor)
             {
                 var wpfColor = Color.FromRgb(
                     revitColor.Red,
@@ -17,7 +18,9 @@ namespace BIMPlugins.Windows.Converters
                     revitColor.Blue
                 );
 
-                return new SolidColorBrush(wpfColor);
+                var brush = new SolidColorBrush(wpfColor);
+                brush.Freeze();
+                return brush;
             }
 
             return Brushes.Transparent;

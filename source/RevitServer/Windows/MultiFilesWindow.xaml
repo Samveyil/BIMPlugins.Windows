@@ -128,7 +128,7 @@
                             <Button Width="18" Height="18" Padding="0" Margin="5 0"
                                     Command="{Binding DataContext.RemoveProjectCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                     CommandParameter="{Binding}"
-                                    Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Удалить">
+                                    Style="{StaticResource MaterialDesignFlatButton}" ToolTip="{x:Static localization:Resources.Remove}">
                                 <materialDesign:PackIcon Kind="WindowClose" Width="18" Height="18" />
                             </Button>
                         </StackPanel>

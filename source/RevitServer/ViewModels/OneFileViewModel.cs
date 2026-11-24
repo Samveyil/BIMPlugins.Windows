@@ -14,9 +14,9 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
         [RelayCommand]
         private void Run()
         {
-            RaiseCloseRequest();
-
             IsCancelled = string.IsNullOrEmpty(FilePath);
+
+            RaiseCloseRequest();
         }
     }
 }

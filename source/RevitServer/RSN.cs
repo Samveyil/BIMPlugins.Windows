@@ -9,45 +9,31 @@ namespace BIMPlugins.Windows.RevitServer
 {
     public static class RSN
     {
-        public static List<string> GetFilePaths()
+        /// <summary>Projects of every Revit version; null when cancelled.</summary>
+        public static List<string> GetFilePaths() =>
+            Show(() => new MultiFilesViewModel(), vm => new MultiFilesWindow(vm), vm => vm.FilePaths);
+
+        /// <summary>Projects of one Revit version, such as "2023"; null when cancelled.</summary>
+        public static List<string> GetFilePaths(string version) =>
+            Show(() => new MultiFilesViewModel(version), vm => new MultiFilesWindow(vm), vm => vm.FilePaths);
+
+        /// <summary>One project of one Revit version, such as "2023"; null when cancelled.</summary>
+        public static string GetFilePath(string version) =>
+            Show(() => new OneFileViewModel(version), vm => new OneFileWindow(vm), vm => vm.FilePath);
+
+        private static TResult Show<TViewModel, TResult>(Func<TViewModel> createViewModel, Func<TViewModel, Window> createWindow,
+            Func<TViewModel, TResult> getResult) where TViewModel : RSNViewModel where TResult : class
         {
-            var vm = CreateViewModel(() => new MultiFilesViewModel());
+            var vm = CreateViewModel(createViewModel);
             if (vm == null) return null;
 
-            var window = new MultiFilesWindow(vm);
+            var window = createWindow(vm);
 
             vm.CloseRequest += (s, e) => window.Close();
 
             window.ShowDialog();
 
-            return vm.IsCancelled ? null : vm.FilePaths;
-        }
-        public static List<string> GetFilePaths(string version)
-        {
-            var vm = CreateViewModel(() => new MultiFilesViewModel(version));
-            if (vm == null) return null;
-
-            var window = new MultiFilesWindow(vm);
-
-            vm.CloseRequest += (s, e) => window.Close();
-
-            window.ShowDialog();
-
-            return vm.IsCancelled ? null : vm.FilePaths;
-        }
-
-        public static string GetFilePath(string version)
-        {
-            var vm = CreateViewModel(() => new OneFileViewModel(version));
-            if (vm == null) return null;
-
-            var window = new OneFileWindow(vm);
-
-            vm.CloseRequest += (s, e) => window.Close();
-
-            window.ShowDialog();
-
-            return vm.IsCancelled ? null : vm.FilePath;
+            return vm.IsCancelled ? null : getResult(vm);
         }
 
         // A missing or broken structure file is told to the user instead of failing the add-in; the caller gets null, as on cancel.

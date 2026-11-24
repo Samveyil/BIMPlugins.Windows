@@ -141,23 +141,11 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
             {
                 var revitItem = new FolderItem(xRSN.Name.LocalName) { IsServer = true};
 
-                var servers = new List<FolderItem>();
-                foreach (var xServer in xRSN.Elements())
-                {
-                    var serverItem = new FolderItem(xServer.Attribute("name").Value) { IsServer = true, Parent = revitItem };
-                    GetData(serverItem, xServer);
-
-                    servers.Add(serverItem);
-                }
-
-                revitItem.Items = CollectionViewSource.GetDefaultView(servers);
-                revitItem.Items.Filter = UniversalFilter;
-
+                revitItem.Items = CreateView(GetServers(xRSN, revitItem));
                 revits.Add(revitItem);
             }
 
-            ServerItems = CollectionViewSource.GetDefaultView(revits);
-            ServerItems.Filter = UniversalFilter;
+            ServerItems = CreateView(revits);
         }
         public RSNViewModel(string revitVersion)
         {
@@ -165,17 +153,28 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
             var xRSN = xDoc.Descendants($"RSN{revitVersion}").FirstOrDefault()
                 ?? throw new InvalidDataException(string.Format(Resources.StructureVersionNotFound, revitVersion, _xmlFilePath));
 
+            ServerItems = CreateView(GetServers(xRSN, null));
+        }
+
+        private List<FolderItem> GetServers(XElement xRSN, FolderItem parent)
+        {
             var servers = new List<FolderItem>();
             foreach (var xServer in xRSN.Elements())
             {
-                var serverItem = new FolderItem(xServer.Attribute("name").Value) { IsServer = true };
+                var serverItem = new FolderItem(xServer.Attribute("name").Value) { IsServer = true, Parent = parent };
                 GetData(serverItem, xServer);
 
                 servers.Add(serverItem);
             }
 
-            ServerItems = CollectionViewSource.GetDefaultView(servers);
-            ServerItems.Filter = UniversalFilter;
+            return servers;
+        }
+
+        private ICollectionView CreateView<T>(List<T> items) where T : FileItem
+        {
+            var view = CollectionViewSource.GetDefaultView(items);
+            view.Filter = UniversalFilter;
+            return view;
         }
 
         // Every problem with the structure file comes out as InvalidDataException with a message for the user.
@@ -225,8 +224,7 @@ namespace BIMPlugins.Windows.RevitServer.ViewModels
 
             if (item is FolderItem folderItem)
             {
-                folderItem.Items = CollectionViewSource.GetDefaultView(items);
-                folderItem.Items.Filter = UniversalFilter;
+                folderItem.Items = CreateView(items);
             }
         }
 
