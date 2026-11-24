@@ -197,7 +197,7 @@ Examples:
     <value>Remove</value>
   </data>
   <data name="ReportWindowTitle" xml:space="preserve">
-    <value>Script results</value>
+    <value>Report</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>Required field.</value>
@@ -210,5 +210,14 @@ Examples:
   </data>
   <data name="ViewDuplicateOption_WithDetailing" xml:space="preserve">
     <value>Duplicate with detailing</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CopyAll" xml:space="preserve">
+    <value>Copy all</value>
   </data>
 </root>

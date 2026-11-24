@@ -45,7 +45,7 @@ namespace BIMPlugins.Windows.RevitServer
             }
             catch (InvalidDataException e)
             {
-                MessageWindow.ShowMessage(e.Message, MessageBoxImage.Warning);
+                MessageWindow.ShowMessage(e.Message, icon: MessageBoxImage.Warning);
                 return null;
             }
         }

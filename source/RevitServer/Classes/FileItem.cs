@@ -1,8 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Windows;
 
 namespace BIMPlugins.Windows.RevitServer.Classes
 {
@@ -16,21 +13,6 @@ namespace BIMPlugins.Windows.RevitServer.Classes
         public string Version { get; set; }
 
         [RelayCommand]
-        private void CopyPath()
-        {
-            // Another program may hold the clipboard open for a moment, and SetText then throws instead of waiting.
-            for (var attempt = 0; attempt < 5; attempt++)
-            {
-                try
-                {
-                    Clipboard.SetText($"Revit {Version} | {FilePath}");
-                    return;
-                }
-                catch (ExternalException)
-                {
-                    Thread.Sleep(50);
-                }
-            }
-        }
+        private void CopyPath() => ClipboardText.Set($"Revit {Version} | {FilePath}");
     }
 }

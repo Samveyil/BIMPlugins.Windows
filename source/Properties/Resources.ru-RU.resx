@@ -197,7 +197,7 @@
     <value>Удалить</value>
   </data>
   <data name="ReportWindowTitle" xml:space="preserve">
-    <value>Отработка скрипта</value>
+    <value>Отчёт</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>Обязательное поле.</value>
@@ -210,5 +210,14 @@
   </data>
   <data name="ViewDuplicateOption_WithDetailing" xml:space="preserve">
     <value>Копировать с детализацией</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="CopyAll" xml:space="preserve">
+    <value>Копировать всё</value>
   </data>
 </root>

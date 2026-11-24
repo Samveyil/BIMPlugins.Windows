@@ -269,7 +269,7 @@ namespace BIMPlugins.Windows.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Script results
+        ///   Ищет локализованную строку, похожую на Report
         /// </summary>
         public static string ReportWindowTitle {
             get {
@@ -310,6 +310,33 @@ namespace BIMPlugins.Windows.Properties {
         public static string ViewDuplicateOption_WithDetailing {
             get {
                 return ResourceManager.GetString("ViewDuplicateOption_WithDetailing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Close
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Copy all
+        /// </summary>
+        public static string CopyAll {
+            get {
+                return ResourceManager.GetString("CopyAll", resourceCulture);
             }
         }
     }
