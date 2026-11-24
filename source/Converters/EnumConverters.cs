@@ -37,9 +37,11 @@ namespace BIMPlugins.Windows.Converters
             Resources.ResourceManager.GetString($"{value.GetType().Name}_{value}", culture) ?? value.ToString();
 
         // The culture WPF passes is the element's language (en-US unless set), not the UI language, so it is not used.
+        /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
             value is Enum enumValue ? GetText(enumValue) : value;
 
+        /// <inheritdoc/>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var type = EnumType ?? Nullable.GetUnderlyingType(targetType) ?? targetType;

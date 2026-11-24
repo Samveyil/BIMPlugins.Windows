@@ -17,15 +17,20 @@ namespace BIMPlugins.Windows.Converters
     /// </remarks>
     public class EqualsToVisibilityConverter : IValueConverter
     {
+        /// <summary>The visibility when the value equals the parameter; Visible by default.</summary>
         public Visibility TrueValue { get; set; } = Visibility.Visible;
+
+        /// <summary>The visibility when it does not; Collapsed by default.</summary>
         public Visibility FalseValue { get; set; } = Visibility.Collapsed;
 
+        /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
             string.Equals(System.Convert.ToString(value, CultureInfo.InvariantCulture),
                 System.Convert.ToString(parameter, CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase)
                 ? TrueValue
                 : FalseValue;
 
+        /// <inheritdoc/>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }

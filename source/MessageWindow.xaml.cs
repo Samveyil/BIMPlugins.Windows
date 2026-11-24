@@ -24,7 +24,11 @@ namespace BIMPlugins.Windows
         /// Shows the message and waits for an answer, as <see cref="MessageBox.Show(string, string, MessageBoxButton, MessageBoxImage)"/>.
         /// Closing the window answers as the cancel button would: Cancel, No for Yes/No, OK for OK alone.
         /// </summary>
+        /// <param name="message">The text; a long one scrolls.</param>
         /// <param name="title">The window's title; BIMPlugins when empty.</param>
+        /// <param name="buttons">OK, OKCancel, YesNo or YesNoCancel; Enter presses OK or Yes, Esc presses Cancel or No.</param>
+        /// <param name="icon">Information, Question, Warning, Error, or None for no icon.</param>
+        /// <returns>The button pressed.</returns>
         public static MessageBoxResult ShowMessage(string message, string title = null,
             MessageBoxButton buttons = MessageBoxButton.OK, MessageBoxImage icon = MessageBoxImage.None)
         {

@@ -15,7 +15,7 @@
                 <materialDesign:BIMPluginsTheme BaseTheme="Light" />
             </ResourceDictionary.MergedDictionaries>
 
-            <materialDesign:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter" />
+            <materialDesign:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -36,7 +36,7 @@
 
             <materialDesign:PackIcon Kind="{Binding Icon}" Margin="5" Height="35" Width="35" VerticalAlignment="Top"
                                      Foreground="{StaticResource BIMPlugins.PrimaryBrush}"
-                                     Visibility="{Binding Icon, Converter={StaticResource NullableToVisibilityConverter}}"/>
+                                     Visibility="{Binding HasIcon, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
             <!-- A long message scrolls instead of growing past the screen. -->
             <ScrollViewer Grid.Column="1" MaxHeight="400" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"

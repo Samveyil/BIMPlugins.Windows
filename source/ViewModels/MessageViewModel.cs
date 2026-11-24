@@ -8,7 +8,7 @@ using System.Windows;
 namespace BIMPlugins.Windows.ViewModels
 {
     /// <summary>A button of <see cref="MessageWindow"/>: Enter presses the default one, Esc the cancel one.</summary>
-    public sealed class MessageButton(string text, MessageBoxResult result, bool isDefault, bool isCancel)
+    internal sealed class MessageButton(string text, MessageBoxResult result, bool isDefault, bool isCancel)
     {
         public string Text { get; } = text;
         public MessageBoxResult Result { get; } = result;
@@ -16,19 +16,19 @@ namespace BIMPlugins.Windows.ViewModels
         public bool IsCancel { get; } = isCancel;
     }
 
-    public sealed partial class MessageViewModel
+    internal sealed partial class MessageViewModel
     {
         public MessageViewModel(string message, string title, MessageBoxButton buttons, MessageBoxImage icon)
         {
             Message = message;
             Title = string.IsNullOrEmpty(title) ? "BIMPlugins" : title;
+            HasIcon = icon != MessageBoxImage.None;
             Icon = icon switch
             {
-                MessageBoxImage.Information => PackIconKind.InformationOutline,
                 MessageBoxImage.Question => PackIconKind.HelpCircleOutline,
                 MessageBoxImage.Warning => PackIconKind.AlertOutline,
                 MessageBoxImage.Error => PackIconKind.AlertCircleOutline,
-                _ => null
+                _ => PackIconKind.InformationOutline
             };
 
             MessageButton ok = new(Resources.OK, MessageBoxResult.OK, true, false);
@@ -47,7 +47,8 @@ namespace BIMPlugins.Windows.ViewModels
 
         public string Message { get; }
         public string Title { get; }
-        public PackIconKind? Icon { get; }
+        public PackIconKind Icon { get; }
+        public bool HasIcon { get; }
         public IReadOnlyList<MessageButton> Buttons { get; }
         public MessageBoxResult Result { get; private set; }
 

@@ -22,6 +22,7 @@ namespace BIMPlugins.Windows
         }
 
         /// <summary>Shows the lines and waits until the window is closed. Each item is shown as its text.</summary>
+        /// <param name="items">The lines; null shows an empty list.</param>
         /// <param name="title">The window's title; "Report" when empty.</param>
         public static void ShowReport(IEnumerable items, string title = null) => new ReportWindow(items, title).ShowDialog();
 

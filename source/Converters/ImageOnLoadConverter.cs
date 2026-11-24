@@ -6,8 +6,17 @@ using System.Windows.Media.Imaging;
 
 namespace BIMPlugins.Windows.Converters
 {
+    /// <summary>
+    /// An image from a full file path, read at once so that the file is not kept open: it can then be replaced or deleted
+    /// while the window shows it, as a plain <c>Source="{Binding Path}"</c> would not allow.
+    /// <c>Source="{Binding ImagePath, Converter={StaticResource ImageOnLoad}}"</c>.
+    /// </summary>
+    /// <remarks>
+    /// An empty path, a relative one, and a file that is missing, locked or not an image show nothing.
+    /// </remarks>
     public class ImageOnLoadConverter : IValueConverter
     {
+        /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string imagePath = value as string;
@@ -37,6 +46,7 @@ namespace BIMPlugins.Windows.Converters
             }
         }
 
+        /// <inheritdoc/>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }
