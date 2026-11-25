@@ -1,4 +1,4 @@
-﻿using BIMPlugins.Windows.RevitServer.Classes;
+using BIMPlugins.Windows.RevitServer.Classes;
 using BIMPlugins.Windows.RevitServer.ViewModels;
 using BIMPlugins.Windows.RevitServer.Windows;
 using System;
@@ -58,7 +58,7 @@ namespace BIMPlugins.Windows.RevitServer
             }
             catch (InvalidDataException e)
             {
-                MessageWindow.ShowMessage(e.Message, icon: MessageBoxImage.Warning);
+                MessageDialog.Show(e.Message, icon: MessageIcon.Warning);
                 return null;
             }
         }

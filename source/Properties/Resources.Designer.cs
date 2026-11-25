@@ -332,6 +332,15 @@ namespace BIMPlugins.Windows.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Retry
+        /// </summary>
+        public static string Retry {
+            get {
+                return ResourceManager.GetString("Retry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Copy all
         /// </summary>
         public static string CopyAll {

@@ -3,47 +3,54 @@ using BIMPlugins.Windows.Properties;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
-using System.Windows;
+using System.Linq;
 using System.Windows.Input;
 
 namespace BIMPlugins.Windows.ViewModels
 {
-    /// <summary>A button of <see cref="MessageWindow"/>: Enter presses the default one, Esc the cancel one.</summary>
-    internal sealed class MessageButton(string text, MessageBoxResult result, bool isDefault, bool isCancel)
+    /// <summary>A button of <see cref="MessageWindow"/>: Enter presses the default one, Esc the cancelling one.</summary>
+    internal sealed class MessageButton(string text, MessageResult result)
     {
         public string Text { get; } = text;
-        public MessageBoxResult Result { get; } = result;
-        public bool IsDefault { get; } = isDefault;
-        public bool IsCancel { get; } = isCancel;
+        public MessageResult Result { get; } = result;
+        public bool IsDefault { get; set; }
+        public bool IsCancel { get; set; }
     }
 
     internal sealed class MessageViewModel
     {
-        public MessageViewModel(string message, string title, MessageBoxButton buttons, MessageBoxImage icon)
+        public MessageViewModel(string message, string title, MessageButtons buttons, MessageIcon icon, MessageResult? defaultResult)
         {
             Message = message;
             Title = string.IsNullOrEmpty(title) ? "BIMPlugins" : title;
-            HasIcon = icon != MessageBoxImage.None;
+            HasIcon = icon != MessageIcon.None;
             Icon = icon switch
             {
-                MessageBoxImage.Question => PackIconKind.HelpCircleOutline,
-                MessageBoxImage.Warning => PackIconKind.AlertOutline,
-                MessageBoxImage.Error => PackIconKind.AlertCircleOutline,
+                MessageIcon.Question => PackIconKind.HelpCircleOutline,
+                MessageIcon.Warning => PackIconKind.AlertOutline,
+                MessageIcon.Error => PackIconKind.AlertCircleOutline,
                 _ => PackIconKind.InformationOutline
             };
 
-            MessageButton ok = new(Resources.OK, MessageBoxResult.OK, true, false);
-            MessageButton yes = new(Resources.Yes, MessageBoxResult.Yes, true, false);
-            MessageButton cancel = new(Resources.Cancel, MessageBoxResult.Cancel, false, true);
-
-            // Closing the window answers as the cancel button would, so that it never returns a button that is not there.
-            (Buttons, Result) = buttons switch
+            Buttons = (buttons switch
             {
-                MessageBoxButton.OKCancel => (new[] { ok, cancel }, MessageBoxResult.Cancel),
-                MessageBoxButton.YesNo => (new[] { yes, new(Resources.No, MessageBoxResult.No, false, true) }, MessageBoxResult.No),
-                MessageBoxButton.YesNoCancel => (new[] { yes, new(Resources.No, MessageBoxResult.No, false, false), cancel }, MessageBoxResult.Cancel),
-                _ => (new[] { new MessageButton(Resources.OK, MessageBoxResult.OK, true, true) }, MessageBoxResult.OK)
-            };
+                MessageButtons.Ok => new[] { MessageResult.Ok },
+                MessageButtons.OkCancel => new[] { MessageResult.Ok, MessageResult.Cancel },
+                MessageButtons.YesNo => new[] { MessageResult.Yes, MessageResult.No },
+                MessageButtons.YesNoCancel => new[] { MessageResult.Yes, MessageResult.No, MessageResult.Cancel },
+                MessageButtons.RetryCancel => new[] { MessageResult.Retry, MessageResult.Cancel },
+                _ => new[] { MessageResult.Close }
+            }).Select(result => new MessageButton(Text(result), result)).ToList();
+
+            var defaultButton = Buttons.FirstOrDefault(b => b.Result == defaultResult) ?? Buttons[0];
+            defaultButton.IsDefault = true;
+
+            // Closing the window answers as the cancelling button would, so that it never returns a button that is not there.
+            var cancelButton = Buttons.FirstOrDefault(b => b.Result == MessageResult.Cancel)
+                ?? Buttons.FirstOrDefault(b => b.Result == MessageResult.No)
+                ?? Buttons[Buttons.Count - 1];
+            cancelButton.IsCancel = true;
+            Result = cancelButton.Result;
         }
 
         public string Message { get; }
@@ -51,17 +58,27 @@ namespace BIMPlugins.Windows.ViewModels
         public PackIconKind Icon { get; }
         public bool HasIcon { get; }
         public IReadOnlyList<MessageButton> Buttons { get; }
-        public MessageBoxResult Result { get; private set; }
+        public MessageResult Result { get; private set; }
 
         public event EventHandler CloseRequest;
 
-        public ICommand CloseCommand => _closeCommand ??= new RelayCommand<MessageBoxResult>(Close);
+        public ICommand CloseCommand => _closeCommand ??= new RelayCommand<MessageResult>(Close);
         public ICommand CopyCommand => _copyCommand ??= new RelayCommand(() => ClipboardText.Set(Message));
 
         private ICommand _closeCommand;
         private ICommand _copyCommand;
 
-        private void Close(MessageBoxResult result)
+        private static string Text(MessageResult result) => result switch
+        {
+            MessageResult.Ok => Resources.OK,
+            MessageResult.Cancel => Resources.Cancel,
+            MessageResult.Yes => Resources.Yes,
+            MessageResult.No => Resources.No,
+            MessageResult.Retry => Resources.Retry,
+            _ => Resources.Close
+        };
+
+        private void Close(MessageResult result)
         {
             Result = result;
             CloseRequest?.Invoke(this, EventArgs.Empty);

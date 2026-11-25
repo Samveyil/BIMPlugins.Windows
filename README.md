@@ -19,27 +19,31 @@ Targets `net48` (Revit 2019–2024) and `net8.0-windows` (Revit 2025). The Revit
 
 Revit loads one copy of the assembly per process, so use the same version in all add-ins.
 
-## MessageWindow
+## MessageDialog
 
 ```C#
 using BIMPlugins.Windows;
 
-MessageWindow.ShowMessage("Sheets copied.", icon: MessageBoxImage.Information);
+MessageDialog.Show("Sheets copied.");
 
-if (MessageWindow.ShowMessage("Overwrite the comment?", "Clash viewer",
-        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+if (MessageDialog.Show("Detach the model?", "Detach", MessageButtons.YesNo, MessageIcon.Question) == MessageResult.Yes)
 {
     // ...
 }
+
+// No is pressed by Enter.
+MessageDialog.Show("Delete 12 views?", buttons: MessageButtons.YesNo, defaultResult: MessageResult.No);
 ```
 
-Enter and Esc press the default and cancel buttons, Ctrl+C copies the message.
+Buttons: `Close` (unless set), `Ok`, `OkCancel`, `YesNo`, `YesNoCancel`, `RetryCancel`. Enter presses the default button, the first one unless `defaultResult` names another; Esc and the window's close button answer as Cancel, No or Close. Ctrl+C copies the message.
 
-## ReportWindow
+## ReportDialog
 
 ```C#
-ReportWindow.ShowReport(closedModels, "Closing models");
+ReportDialog.Show(closedModels, "Closing models");
 ```
+
+Long lines wrap. The button or Ctrl+C copies every line; Enter and Esc close it.
 
 ## Revit Server
 

@@ -220,4 +220,7 @@
   <data name="CopyAll" xml:space="preserve">
     <value>Копировать всё</value>
   </data>
+  <data name="Retry" xml:space="preserve">
+    <value>Повторить</value>
+  </data>
 </root>
