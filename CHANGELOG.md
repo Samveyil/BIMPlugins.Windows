@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.2] / 2026-11-25
+### Changed
+- `MessageWindow`: the buttons stand 20 px apart, and a short message no longer makes the window wider than 300 px.
+
 ## [2.0.1] / 2026-11-24
 ### Changed
 - `BIMPlugins.MaterialDesign` 5.3.2.2: narrow scroll bars, as in Visual Studio.
@@ -57,5 +61,6 @@ First release on nuget.org.
 - The dependency on `CommunityToolkit.Mvvm`: the package depends on `BIMPlugins.MaterialDesign` alone.
 - The debug test command of the Revit Server picker.
 
+[2.0.2]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v2.0.2
 [2.0.1]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v2.0.1
 [2.0.0]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v2.0.0

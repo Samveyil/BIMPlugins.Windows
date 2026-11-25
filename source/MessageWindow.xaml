@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:BIMPlugins.Windows.ViewModels"
         d:DataContext="{d:DesignInstance local:MessageViewModel}"
         mc:Ignorable="d"
-        Title="{Binding Title}" MinWidth="360" Background="White" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="{Binding Title}" MinWidth="300" Background="White" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         SizeToContent="WidthAndHeight" ShowInTaskbar="False">
     <Window.Resources>
         <ResourceDictionary>
@@ -56,7 +56,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:MessageButton}">
-                        <Button Margin="8 0 0 0" MinWidth="90" Padding="15 0" Height="25" Content="{Binding Text}"
+                        <Button Margin="20 0 0 0" MinWidth="90" Padding="15 0" Height="25" Content="{Binding Text}"
                                 IsDefault="{Binding IsDefault}" IsCancel="{Binding IsCancel}"
                                 Style="{StaticResource MaterialDesignPaperButton}"
                                 Command="{Binding DataContext.CloseCommand, RelativeSource={RelativeSource AncestorType=Window}}"
