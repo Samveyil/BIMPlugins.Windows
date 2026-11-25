@@ -12,7 +12,7 @@ WPF windows, converters and behaviors for Revit add-ins. Styles come from
 ## Installation
 
 ```xml
-<PackageReference Include="BIMPlugins.Windows" Version="2.0.0" />
+<PackageReference Include="BIMPlugins.Windows" Version="*" />
 ```
 
 Targets `net48` (Revit 2019–2024) and `net8.0-windows` (Revit 2025). The Revit API is not included.
