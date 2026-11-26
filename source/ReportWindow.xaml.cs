@@ -15,6 +15,7 @@ namespace BIMPlugins.Windows
         {
             InitializeComponent();
             WindowOwner.SetToRevit(this);
+            FitToContent.Apply(this);
 
             _items = items ?? Array.Empty<object>();
             Box.ItemsSource = _items;

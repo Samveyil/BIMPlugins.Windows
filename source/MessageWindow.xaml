@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:BIMPlugins.Windows.ViewModels"
         d:DataContext="{d:DesignInstance local:MessageViewModel}"
         mc:Ignorable="d"
-        Title="{Binding Title}" MinWidth="280" Background="White" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="{Binding Title}" MinWidth="380" Background="White" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         SizeToContent="WidthAndHeight" ShowInTaskbar="False">
     <Window.Resources>
         <ResourceDictionary>
@@ -43,7 +43,7 @@
             <!-- A long message scrolls instead of growing past the screen. -->
             <ScrollViewer Grid.Column="1" MaxHeight="400" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                           VerticalAlignment="Center" Focusable="False">
-                <TextBlock Text="{Binding Message}" TextWrapping="Wrap" MaxWidth="340" FontSize="15"
+                <TextBlock Text="{Binding Message}" TextWrapping="Wrap" MaxWidth="460" FontSize="15"
                            Foreground="{StaticResource BIMPlugins.SecondaryBrush}"/>
             </ScrollViewer>
         </Grid>

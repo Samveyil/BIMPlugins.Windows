@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.1] / 2026-11-26
+### Changed
+- `MessageDialog` is wider, as the task dialogs of Revit: at least 380 px, and the text wraps at 460 px instead of 340 px.
+### Fixed
+- `MessageDialog` and `ReportDialog` are no longer cut off at the right and bottom edges in Revit.
+
 ## [3.0.0] / 2026-11-25
 ### Breaking changes
 - `MessageDialog.Show(message, title, buttons, icon, defaultResult)` replaces `MessageWindow.ShowMessage`, as `TaskDialog.Show`
@@ -75,6 +81,7 @@ First release on nuget.org.
 - The dependency on `CommunityToolkit.Mvvm`: the package depends on `BIMPlugins.MaterialDesign` alone.
 - The debug test command of the Revit Server picker.
 
+[3.0.1]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v3.0.1
 [3.0.0]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v3.0.0
 [2.0.2]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v2.0.2
 [2.0.1]: https://github.com/Samveyil/BIMPlugins.Windows/tree/v2.0.1

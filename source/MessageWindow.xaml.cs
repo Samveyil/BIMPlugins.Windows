@@ -13,6 +13,7 @@ namespace BIMPlugins.Windows
         {
             InitializeComponent();
             WindowOwner.SetToRevit(this);
+            FitToContent.Apply(this);
 
             DataContext = viewModel;
             viewModel.CloseRequest += (s, e) => Close();
